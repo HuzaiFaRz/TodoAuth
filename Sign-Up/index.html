@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <form class="signup-form">
+      <h1>SIGN UP</h1>
+      <label for="email" class="label">
+        Email
+        <input
+          type="email"
+          id="signUpEmail"
+          placeholder="Email"
+          autocomplete="off"
+          value="huzaifa@gmail.com"
+        />
+      </label>
+      <label for="password" class="label">
+        Password
+        <input
+          type="password"
+          id="signUpPassword"
+          value="123456"
+          placeholder="Password"
+        />
+      </label>
+      <button type="submit" name="submit" id="signUpBtn" class="submit-btn">
+        SignUp
+      </button>
+    </form>
+
+    <a href="../Login/login.html"  class="login-page-btn"
+      >Do You Have Account? Login</a
+    >
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+    <script type="module" src="signup.js"></script>
+    <script type="module" src="../firebase.js"></script>
+  </body>
+</html>
