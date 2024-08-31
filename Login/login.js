@@ -15,7 +15,7 @@ const logInFunctionility = () => {
       logInBtn.style.opacity = "1";
       logInBtn.style.cursor = "pointer";
       logInForm.reset();
-      window.location.replace("http://127.0.0.1:5500/DashBoard/dashboard.html");
+      window.location.replace("http://127.0.0.1:5500");
     })
     .catch((error) => {
       const errorCode = error.code;

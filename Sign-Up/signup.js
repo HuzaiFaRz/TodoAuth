@@ -26,7 +26,7 @@ const signUpFunctionility = () => {
       signUpForm.reset();
     });
 };
-const showToast = (massege, background) => {
+ const showToast = (massege, background) => {
   Toastify({
     text: `${massege}`,
     position: "center",
@@ -38,4 +38,7 @@ const showToast = (massege, background) => {
     },
   }).showToast();
 };
+
+
+
 signUpForm.addEventListener("submit", signUpFunctionility);
