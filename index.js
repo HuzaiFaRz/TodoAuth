@@ -1,24 +1,15 @@
 import { auth, signOut, onAuthStateChanged } from "./firebase.js";
-
 const logOutBtn = document.querySelector(".logout-btn");
-
-// URL for the index page
-
 window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/auth.user
       const uid = user.uid;
       console.log(uid);
     } else {
-      // User is signed out
-      // ...
       window.location.href = "http://127.0.0.1:5500/signup.html";
     }
   });
 });
-
 logOutBtn.addEventListener("click", () => {
   logOutBtn.textContent = "Loading....";
   logOutBtn.style.opacity = "0.4";
