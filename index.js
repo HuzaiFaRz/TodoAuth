@@ -1,15 +1,20 @@
 import { auth, signOut, onAuthStateChanged } from "./firebase.js";
 const logOutBtn = document.querySelector(".logout-btn");
+const userEmail = document.querySelector(".userEmail");
+
 window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      userEmail.textContent = `Hi ${user.email}`;
       const uid = user.uid;
       console.log(uid);
     } else {
-      window.location.href = "http://127.0.0.1:5500/signup.html";
+      userEmail.textContent = `Hi ${undefined}`;
+      window.location.href = "http://127.0.0.1:5500/Sign-Up/signup.html";
     }
   });
 });
+
 logOutBtn.addEventListener("click", () => {
   logOutBtn.textContent = "Loading....";
   logOutBtn.style.opacity = "0.4";

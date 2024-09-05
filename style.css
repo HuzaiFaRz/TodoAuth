@@ -36,6 +36,13 @@ body {
 h1 {
   color: #fbfcf8;
 }
+
+
+.userEmail{
+  color: #fbfcf8;
+  font-size: 30px;
+}
+
 .signup-form,
 .login-form {
   width: 400px;
