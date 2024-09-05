@@ -2,7 +2,7 @@ import { auth, signOut, onAuthStateChanged } from "./firebase.js";
 const logOutBtn = document.querySelector(".logout-btn");
 const userEmail = document.querySelector(".userEmail");
 
-window.addEventListener("load", () => {
+window.addEventListener("click", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       userEmail.textContent = `Hi ${user.email}`;
