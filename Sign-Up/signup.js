@@ -1,32 +1,13 @@
 import { auth, createUserWithEmailAndPassword } from "../firebase.js";
 const signUpForm = document.querySelector(".signup-form");
-const { signUpEmail, signUpPassword, signUpBtn } = signUpForm;
-const signUpFunctionility = () => {
-  event.preventDefault();
-  signUpBtn.textContent = "Loading....";
-  signUpBtn.style.opacity = "0.4";
-  signUpBtn.style.cursor = "default";
-  createUserWithEmailAndPassword(auth, signUpEmail.value, signUpPassword.value)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      showToast("SignUp SuccessFully", "rgb(0, 128, 0,0.5)");
-      signUpBtn.textContent = "SignUp";
-      signUpBtn.style.opacity = "1";
-      signUpBtn.style.cursor = "pointer";
-      signUpForm.reset();
-      window.location.replace("http://127.0.0.1:5500/Login/login.html");
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      showToast(errorMessage, "rgb(255, 0, 0,0.5)");
-      signUpBtn.textContent = "SignUp";
-      signUpBtn.style.opacity = "1";
-      signUpBtn.style.cursor = "pointer";
-      signUpForm.reset();
-    });
+const signUpSubmitBtn = document.querySelector("#SignUpBtn");
+
+const resetSignUpButton = () => {
+  signUpSubmitBtn.innerHTML = `Sign Up`;
+  signUpSubmitBtn.style.opacity = "1";
+  signUpSubmitBtn.style.cursor = "pointer";
 };
- const showToast = (massege, background) => {
+const showToast = (massege, background) => {
   Toastify({
     text: `${massege}`,
     position: "center",
@@ -38,7 +19,58 @@ const signUpFunctionility = () => {
     },
   }).showToast();
 };
+const signUpFunctionility = () => {
+  event.preventDefault();
 
+  const signUpFormData = new FormData(signUpForm);
+  const signUpUserInformaTion = {
+    signUpName: signUpFormData.get("SignUpName"),
+    signUpEmail: signUpFormData.get("SignUpEmail"),
+    signUpPassword: signUpFormData.get("SignUpPassword"),
+    signUpConfirmPassword: signUpFormData.get("SignUpConfirmPassword"),
+  };
+
+  if (
+    !signUpUserInformaTion.signUpName ||
+    !signUpUserInformaTion.signUpEmail ||
+    !signUpUserInformaTion.signUpPassword ||
+    !signUpUserInformaTion.signUpConfirmPassword
+  ) {
+    showToast("Fill All Field", "rgb(220, 53, 69)");
+    resetSignUpButton();
+    return;
+  }
+  if (
+    signUpUserInformaTion.signUpPassword !==
+    signUpUserInformaTion.signUpConfirmPassword
+  ) {
+    showToast("Password Does Not Match", "rgb(220, 53, 69)");
+    resetSignUpButton();
+    return;
+  }
+  signUpSubmitBtn.innerHTML = ` Sign Up <i class="spinner-border spinner-border-sm text-light" role="status"> </i>`;
+  signUpSubmitBtn.style.opacity = "0.5";
+  signUpSubmitBtn.style.cursor = "not-allowed";
+  createUserWithEmailAndPassword(
+    auth,
+    signUpUserInformaTion.signUpEmail,
+    signUpUserInformaTion.signUpPassword
+  )
+    .then((userCredential) => {
+      const user = userCredential.user;
+      showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
+      resetSignUpButton();
+      signUpForm.reset();
+      window.location.replace("../Login/login.html");
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      showToast(errorMessage, "rgb(220, 53, 69)");
+      resetSignUpButton();
+      signUpForm.reset();
+    });
+};
 
 
 signUpForm.addEventListener("submit", signUpFunctionility);
