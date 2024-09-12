@@ -6,10 +6,13 @@ const userCheck = document.querySelector(".alert-main");
 window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      userCheck.style.display = "none";
-      userEmail.textContent = `Hi! ${user.email}`;
+      if (userCheck) {
+        userCheck.style.display = "none";
+      }
+      if (userEmail) {
+        userEmail.textContent = `Hi! ${user.email}`;
+      }
       const uid = user.uid;
-      console.log(true);
     } else {
       userCheck.style.display = "flex";
     }

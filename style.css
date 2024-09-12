@@ -125,6 +125,15 @@ input {
   }
 }
 
+@media (max-width: 600px) {
+  .alert-main {
+    padding: 0 10px;
+  }
+  .user-exist-check {
+    width: 100%;
+  }
+}
+
 @media (max-width: 500px) {
   .signup-main,
   .login-main {
