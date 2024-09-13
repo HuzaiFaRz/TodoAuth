@@ -41,10 +41,27 @@ body {
 .logo {
   width: 60px;
 }
+
+.todo-logo {
+  width: 40px;
+}
+
 .main,
 .signup-main,
 .login-main {
   background-color: var(--bg-Color);
+}
+
+.main {
+  display: flex;
+}
+
+.navbar {
+  z-index: 123;
+}
+
+.logout-btn{
+  z-index: 2222;
 }
 
 .navbar-toggler {
@@ -119,6 +136,32 @@ input {
 .password-icon {
   cursor: pointer;
 }
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: black;
+}
+
+#AddTaskTextInput {
+  box-shadow: none !important;
+}
+
+.todo-app {
+  width: 500px;
+  height: 660px;
+}
+
+.todo-header {
+  height: 160px;
+}
+
+.todo-body {
+  height: 500px;
+  overflow-y: scroll;
+}
+
 @media (max-width: 991px) {
   .navbar {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;

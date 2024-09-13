@@ -22,13 +22,19 @@
     <main
       class="main w-100 h-100 d-flex flex-column justify-content-center align-items-center"
     >
-      <nav
-        class="navbar navbar-expand-lg navbar-light bg-light position-fixed top-0 end-0 w-100"
+      <button
+        class="logout-btn btn bg-danger text-light fw-medium border-2 position-absolute overflow-hidden start-50 top-0 mt-4 translate-middle-x"
       >
-        <div class="container-fluid">
+        Log Out
+      </button>
+      <nav
+        class="navbar navbar-expand-lg navbar-light bg-light position-absolute top-0 end-0 w-100"
+      >
+        <div class="container-fluid position-relative">
           <a class="navbar-brand" href="index.html">
             <img src="favicon.png" class="logo" />
           </a>
+
           <button
             class="navbar-toggler border-1 border-secondary border-opacity-50"
             type="button"
@@ -60,17 +66,12 @@
                   >About Us</a
                 >
               </li>
+
               <li class="nav-item">
                 <a class="nav-link fw-medium fs-6" href="contact.html"
                   >Contact Us</a
                 >
               </li>
-              <li class="nav-item">
-                <button class="logout-btn btn bg-danger text-light fw-medium border-2">
-                  Log Out 
-                </button>
-              </li>
-
             </ul>
             <form
               class="d-flex flex-row justify-content-center align-items-center py-3"
@@ -89,7 +90,6 @@
           </div>
         </div>
       </nav>
-
 
       <div
         class="alert-main w-100 h-100 position-fixed flex-column justify-content-center align-items-center"
@@ -124,26 +124,118 @@
       </div>
 
       <div
-        class="user-details d-flex flex-column justify-content-start align-items-center gap-4 w-100"
+        class="user-details mt-5 d-flex flex-column justify-content-start align-items-center gap-4 w-100"
       >
-        <h2 class="userEmail display-4 fw-medium text-light">Hello</h2>
+        <h2 class="userEmail display-6 fw-medium text-light">Hello</h2>
       </div>
 
+      <div class="todo-app bg-light rounded-2 mt-3">
+        <div class="todo-header w-100 px-2 py-2">
+          <h1
+            class="text-bg-dark px-2 py-3 rounded-2 d-flex flex-row justify-content-between align-items-center"
+          >
+            <div class="fs-4 fw-semibold">To-Do List</div>
+            <img src="favicon.png" class="todo-logo mx-1" />
+          </h1>
+          <div
+            class="form-floating todo-form d-flex flex-wrap justify-content-evenly align-items-center"
+          >
+            <input
+              type="text"
+              class="form-control w-75 border-2 border-secondary rounded-4"
+              id="AddTaskTextInput"
+              placeholder="Add Your Task"
+            />
+            <label for="AddTaskTextInput" class="fw-medium fs-6 px-3"
+              >Add Your Task</label
+            >
+            <button
+              type="submit"
+              class="btn btn-outline-primary fw-medium fs-3 rounded-4 px-4 py-1 border-2"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+        <div class="todo-body">
+          <ul
+            class="todo-items border-2 border-top border-dark w-100 d-flex flex-column justify-content-center align-items-center text-start gap-4 py-3 px-0 list-unstyled"
+          >
+            <li
+              class="task d-flex flex-column justify-content-center align-items-center gap-1 px-3 py-2 border-bottom border-2 border-black"
+            >
+              <span class="task-text fs-6 fw-medium text-dark">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
+                aperiam odit praesentium veritatis? Optio ducimus, impedit
+                excepturi dolores neque sunt.
+              </span>
 
+              <div
+                class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2"
+              >
+                <div
+                  class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1"
+                >
+                  Edit
+                </div>
+                <div
+                  class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"
+                >
+                  Delete
+                </div>
+              </div>
+            </li>
+            <li
+              class="task d-flex flex-column justify-content-center align-items-center gap-1 px-3 py-2 border-bottom border-2 border-black"
+            >
+              <span class="task-text fs-6 fw-medium text-dark">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
+                aperiam odit praesentium veritatis? Optio ducimus, impedit
+                excepturi dolores neque sunt.
+              </span>
 
+              <div
+                class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2"
+              >
+                <div
+                  class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1"
+                >
+                  Edit
+                </div>
+                <div
+                  class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"
+                >
+                  Delete
+                </div>
+              </div>
+            </li>
+            <li
+              class="task d-flex flex-column justify-content-center align-items-center gap-1 px-3 py-2 border-bottom border-2 border-black"
+            >
+              <span class="task-text fs-6 fw-medium text-dark">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
+                aperiam odit praesentium veritatis? Optio ducimus, impedit
+                excepturi dolores neque sunt.
+              </span>
 
-
-<div class="todo-main">
-
-</div>
-
-
-
-
-
-
-
-
+              <div
+                class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2"
+              >
+                <div
+                  class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1"
+                >
+                  Edit
+                </div>
+                <div
+                  class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"
+                >
+                  Delete
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </main>
 
     <script

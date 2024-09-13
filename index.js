@@ -14,7 +14,9 @@ window.addEventListener("load", () => {
       }
       const uid = user.uid;
     } else {
-      userCheck.style.display = "flex";
+      if (userCheck) {
+        userCheck.style.display = "flex";
+      }
     }
   });
 });
@@ -74,3 +76,4 @@ if (passwordIcon) {
     });
   });
 }
+
