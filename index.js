@@ -85,7 +85,6 @@ const toDoFunctionility = () => {
     showToast("Write Task In Input", "rgb(220, 53, 69)");
     return;
   }
-
   todoItems.innerHTML += ` <li  class="task w-100 gap-1 px-3 py-2 border-bottom border-2 border-black">
   <span class="task-text fs-6 fw-medium text-dark"> ${addTaskTextInput.value}</span> 
   <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2" >

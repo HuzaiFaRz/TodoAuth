@@ -191,6 +191,9 @@ input {
   .login-form {
     width: 100%;
   }
+  .main {
+    padding: 0 10px;
+  }
   #SuggestionAccount::after,
   #SuggestionAccount::before {
     width: 140px;
@@ -211,7 +214,26 @@ input {
     width: 18px;
     height: 18px;
   }
+  .todo-app {
+    width: 100%;
+    height: 720px;
+  }
+
+  .todo-header {
+    height: 220px;
+  }
+
+  #AddTaskBtn,
+  .task-edit-btn,
+  .task-delete-btn {
+    font-size: 15px !important;
+    padding: 5px 20px !important;
+  }
+  .todo-form {
+    flex-wrap: wrap !important;
+  }
 }
+
 @media (max-width: 400px) {
   #SuggestionAccount::after,
   #SuggestionAccount::before {
