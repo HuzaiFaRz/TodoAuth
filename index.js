@@ -1,37 +1,23 @@
 import { auth, signOut, onAuthStateChanged } from "./firebase.js";
 const logOutBtn = document.querySelector(".logout-btn");
 const userEmail = document.querySelector(".userEmail");
-const userCheck = document.querySelector(".alert-main");
-
-window.addEventListener("load", () => {
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      if (userCheck) {
-        userCheck.style.display = "none";
-      }
-      if (userEmail) {
-        userEmail.textContent = `Hi! ${user.email}`;
-      }
-      const uid = user.uid;
-    } else {
-      if (userCheck) {
-        userCheck.style.display = "flex";
-      }
-    }
-  });
-});
-
+const alertMain = document.querySelector(".alert-main");
+const closeAlertBtn = document.querySelector("#closeAlertBtn");
+const passwordIcons = document.querySelectorAll(".password-icon");
+const passwordInputs = document.querySelectorAll("#password-input");
+const addTaskTextInput = document.querySelector("#AddTaskTextInput");
+const addTaskBtn = document.querySelector("#AddTaskBtn");
+const todoItems = document.querySelector(".todo-items");
 const resetLogOutButton = () => {
   logOutBtn.innerHTML = `Log Out`;
   logOutBtn.style.opacity = "1";
   logOutBtn.style.cursor = "pointer";
 };
-
 const showToast = (massege, background) => {
   Toastify({
     text: `${massege}`,
     position: "center",
-    duration: 3000,
+    duration: 1000,
     style: {
       background: `${background}`,
       color: "#fbfcf8",
@@ -40,8 +26,50 @@ const showToast = (massege, background) => {
   }).showToast();
 };
 
-const passwordIcon = document.querySelectorAll(".password-icon");
-const floatingPassword = document.querySelectorAll("#floatingPassword");
+const toDoFunctionility = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      if (alertMain) {
+        alertMain.style.display = "none";
+      }
+
+      if (!addTaskTextInput.value) {
+        showToast("Write Task In Input", "rgb(220, 53, 69)");
+        return;
+      }
+      todoItems.innerHTML += ` <li  class="task w-100 gap-1 px-3 py-2 border-bottom border-2 border-black">
+  <span class="task-text fs-6 fw-medium text-dark"> ${addTaskTextInput.value}</span> 
+  <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2" >
+  <div class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</div>
+  <div class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </div></li>`;
+      showToast("Task Added", "rgb( 25, 135, 84)");
+      addTaskTextInput.value = "";
+
+      if (userEmail) {
+        userEmail.textContent = `Hi! ${user.email}`;
+      }
+      const uid = user.uid;
+    } else {
+      if (alertMain) {
+        alertMain.style.display = "flex";
+      }
+    }
+  });
+};
+
+console.log(closeAlertBtn);
+
+if (closeAlertBtn) {
+  closeAlertBtn.addEventListener("click", () => {
+    console.log(this);
+
+    alertMain.style.display = "none";
+  });
+}
+
+if (addTaskBtn) {
+  addTaskBtn.addEventListener("click", toDoFunctionility);
+}
 
 if (logOutBtn) {
   logOutBtn.addEventListener("click", () => {
@@ -62,36 +90,18 @@ if (logOutBtn) {
       });
   });
 }
-if (passwordIcon) {
-  Array.from(passwordIcon).forEach((passwordIconElem, passwordIconIndex) => {
+
+if (passwordIcons) {
+  Array.from(passwordIcons).forEach((passwordIconElem, passwordIconIndex) => {
     passwordIconElem.addEventListener("click", () => {
       passwordIconElem.classList.toggle("password-icon-active");
       if (passwordIconElem.classList.contains("password-icon-active")) {
         passwordIconElem.classList.replace("bi-eye-slash-fill", "bi-eye-fill");
-        floatingPassword[passwordIconIndex].setAttribute("type", "text");
+        passwordInputs[passwordIconIndex].setAttribute("type", "text");
       } else {
         passwordIconElem.classList.replace("bi-eye-fill", "bi-eye-slash-fill");
-        floatingPassword[passwordIconIndex].setAttribute("type", "password");
+        passwordInputs[passwordIconIndex].setAttribute("type", "password");
       }
     });
   });
 }
-
-const addTaskTextInput = document.querySelector("#AddTaskTextInput");
-const addTaskBtn = document.querySelector("#AddTaskBtn");
-const todoItems = document.querySelector(".todo-items");
-const toDoFunctionility = () => {
-  if (!addTaskTextInput.value) {
-    showToast("Write Task In Input", "rgb(220, 53, 69)");
-    return;
-  }
-  todoItems.innerHTML += ` <li  class="task w-100 gap-1 px-3 py-2 border-bottom border-2 border-black">
-  <span class="task-text fs-6 fw-medium text-dark"> ${addTaskTextInput.value}</span> 
-  <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2" >
-  <div class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</div>
-  <div class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </div></li>`;
-  showToast("Task Added", "rgb( 25, 135, 84)");
-  addTaskTextInput.value = "";
-};
-
-addTaskBtn.addEventListener("click", toDoFunctionility);

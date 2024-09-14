@@ -1,4 +1,10 @@
-import { auth, createUserWithEmailAndPassword } from "../firebase.js";
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  db,
+  collection,
+  addDoc,
+} from "../firebase.js";
 const signUpForm = document.querySelector(".signup-form");
 const signUpSubmitBtn = document.querySelector("#SignUpBtn");
 
@@ -6,6 +12,7 @@ const resetSignUpButton = () => {
   signUpSubmitBtn.innerHTML = `Sign Up`;
   signUpSubmitBtn.style.opacity = "1";
   signUpSubmitBtn.style.cursor = "pointer";
+  signUpSubmitBtn.disabled = false;
 };
 const showToast = (massege, background) => {
   Toastify({
@@ -51,17 +58,36 @@ const signUpFunctionility = () => {
   signUpSubmitBtn.innerHTML = ` Sign Up <i class="spinner-border spinner-border-sm text-light" role="status"> </i>`;
   signUpSubmitBtn.style.opacity = "0.5";
   signUpSubmitBtn.style.cursor = "not-allowed";
+  signUpSubmitBtn.disabled = true;
   createUserWithEmailAndPassword(
     auth,
     signUpUserInformaTion.signUpEmail,
     signUpUserInformaTion.signUpPassword
   )
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
+      console.log(user.uid);
+
+      try {
+        const docRef = await addDoc(collection(db, "users"), {
+          uid: user.uid,
+          userName: signUpUserInformaTion.signUpName,
+          userEmail: signUpUserInformaTion.signUpEmail,
+        });
+        showToast(
+          `Document written with ID: ${docRef.id}`,
+          "rgb( 25, 135, 84)"
+        );
+        console.log(docRef);
+      } catch (error) {
+        showToast(`Error adding document: ${error}`, "rgb(220, 53, 69)");
+        console.log(error);
+      }
+
       showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
       resetSignUpButton();
       signUpForm.reset();
-      window.location.replace("../Login/login.html");
+      // window.location.replace("../Login/login.html");
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -71,6 +97,5 @@ const signUpFunctionility = () => {
       signUpForm.reset();
     });
 };
-
 
 signUpForm.addEventListener("submit", signUpFunctionility);

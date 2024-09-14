@@ -6,6 +6,7 @@ const resetLoginButton = () => {
   logInSubmitBtn.innerHTML = `Log In`;
   logInSubmitBtn.style.opacity = "1";
   logInSubmitBtn.style.cursor = "pointer";
+  logInSubmitBtn.disabled = false;
 };
 const showToast = (massege, background) => {
   Toastify({
@@ -31,7 +32,7 @@ const logInFunctionility = () => {
   logInSubmitBtn.innerHTML = `Log In <i class="spinner-border spinner-border-sm text-light" role="status"> </i>`;
   logInSubmitBtn.style.opacity = "0.5";
   logInSubmitBtn.style.cursor = "not-allowed";
-
+  logInSubmitBtn.disabled = true;
   if (!logInUserInformaTion.logInEmail || !logInUserInformaTion.logInPassword) {
     showToast("Fill All Field", "rgb(220, 53, 69)");
     resetLoginButton();
