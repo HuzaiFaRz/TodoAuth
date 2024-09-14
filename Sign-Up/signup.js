@@ -26,7 +26,7 @@ const showToast = (massege, background) => {
     },
   }).showToast();
 };
-const signUpFunctionility = () => {
+const signUpFunctionility = async () => {
   event.preventDefault();
 
   const signUpFormData = new FormData(signUpForm);
@@ -66,8 +66,6 @@ const signUpFunctionility = () => {
   )
     .then(async (userCredential) => {
       const user = userCredential.user;
-      console.log(user.uid);
-
       try {
         const docRef = await addDoc(collection(db, "users"), {
           uid: user.uid,
@@ -81,7 +79,6 @@ const signUpFunctionility = () => {
         console.log(docRef);
       } catch (error) {
         showToast(`Error adding document: ${error}`, "rgb(220, 53, 69)");
-        console.log(error);
       }
 
       showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");

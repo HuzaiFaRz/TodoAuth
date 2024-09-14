@@ -29,8 +29,15 @@ const showToast = (massege, background) => {
 const toDoFunctionility = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      if (userEmail) {
+        userEmail.textContent = `Hi! ${user.email}`;
+      }
+
       if (alertMain) {
         alertMain.style.display = "none";
+      }
+      if (logOutBtn) {
+        logOutBtn.style.display = "block";
       }
 
       if (!addTaskTextInput.value) {
@@ -44,20 +51,19 @@ const toDoFunctionility = () => {
   <div class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </div></li>`;
       showToast("Task Added", "rgb( 25, 135, 84)");
       addTaskTextInput.value = "";
+      console.log(user);
 
-      if (userEmail) {
-        userEmail.textContent = `Hi! ${user.email}`;
-      }
       const uid = user.uid;
     } else {
       if (alertMain) {
         alertMain.style.display = "flex";
       }
+      if (logOutBtn) {
+        logOutBtn.style.display = "none";
+      }
     }
   });
 };
-
-console.log(closeAlertBtn);
 
 if (closeAlertBtn) {
   closeAlertBtn.addEventListener("click", () => {
@@ -66,6 +72,7 @@ if (closeAlertBtn) {
     alertMain.style.display = "none";
   });
 }
+window.addEventListener("load", toDoFunctionility);
 
 if (addTaskBtn) {
   addTaskBtn.addEventListener("click", toDoFunctionility);
