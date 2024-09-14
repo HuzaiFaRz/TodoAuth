@@ -72,6 +72,13 @@ body {
   outline: none !important ;
 }
 
+
+
+
+ol{
+  list-style-type: decimal;
+}
+
 .signup-form,
 .login-form {
   width: 450px;

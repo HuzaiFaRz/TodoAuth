@@ -51,14 +51,14 @@ if (logOutBtn) {
     signOut(auth)
       .then(() => {
         resetLogOutButton();
-        showToast("Sign Out SuccessFully", "rgb(0, 128, 0,0.5)");
+        showToast("Sign Out SuccessFully", "rgb( 25, 135, 84)");
         window.location.replace("http://127.0.0.1:5500/Login/login.html");
       })
       .catch((error) => {
         resetLogOutButton();
         const errorCode = error.code;
         const errorMessage = error.message;
-        showToast(errorMessage, "rgb(255, 0, 0,0.5)");
+        showToast(errorMessage, "rgb(220, 53, 69)");
       });
   });
 }
@@ -77,3 +77,21 @@ if (passwordIcon) {
   });
 }
 
+const addTaskTextInput = document.querySelector("#AddTaskTextInput");
+const addTaskBtn = document.querySelector("#AddTaskBtn");
+const todoItems = document.querySelector(".todo-items");
+const toDoFunctionility = () => {
+  if (!addTaskTextInput.value) {
+    showToast("Write Task In Input", "rgb(220, 53, 69)");
+    return;
+  }
+
+  todoItems.innerHTML += ` <li  class="task w-100 gap-1 px-3 py-2 border-bottom border-2 border-black">
+  <span class="task-text fs-6 fw-medium text-dark"> ${addTaskTextInput.value}</span> 
+  <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2" >
+  <div class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</div>
+  <div class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </div></li>`;
+  showToast("Task Added", "rgb( 25, 135, 84)");
+};
+
+addTaskBtn.addEventListener("click", toDoFunctionility);

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>To Do Home</title>
+    <title>To Do About</title>
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
     <link
       rel="stylesheet"
@@ -57,7 +57,7 @@
                 <a
                   class="nav-link fw-medium fs-6 active"
                   aria-current="page"
-                  href="#"
+                  href="index.html"
                   >Home</a
                 >
               </li>
@@ -90,82 +90,7 @@
           </div>
         </div>
       </nav>
-
-      <div
-        class="alert-main w-100 h-100 position-fixed flex-column justify-content-center align-items-center"
-      >
-        <div
-          class="toast user-exist-check d-block"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div class="toast-header h-25">
-            <img src="favicon.png" class="logo" alt="..." />
-            <strong class="me-auto px-3 fs-3">Hello!</strong>
-          </div>
-          <div
-            class="toast-body d-flex flex-wrap justify-content-evenly align-items-center py-3 h-75"
-          >
-            <a
-              href="Sign-Up/signup.html"
-              class="btn btn-outline-success fw-medium border-2"
-            >
-              Sign Up
-            </a>
-            <a
-              href="Login/login.html"
-              class="btn btn-outline-success fw-medium border-2"
-            >
-              Log In
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="user-details mt-5 d-flex flex-column justify-content-start align-items-center gap-4 w-100"
-      >
-        <h2 class="userEmail display-6 fw-medium text-light">Hello</h2>
-      </div>
-
-      <div class="todo-app bg-light rounded-2 mt-3">
-        <div class="todo-header w-100 px-2 py-2">
-          <h1
-            class="text-bg-dark px-2 py-3 rounded-2 d-flex flex-row justify-content-between align-items-center"
-          >
-            <div class="fs-4 fw-semibold">To-Do List</div>
-            <img src="favicon.png" class="todo-logo mx-1" />
-          </h1>
-          <div
-            class="form-floating todo-form d-flex flex-wrap justify-content-evenly align-items-center"
-          >
-            <input
-              type="text"
-              class="form-control w-75 border-2 border-secondary rounded-4"
-              id="AddTaskTextInput"
-              placeholder="Add Your Task"
-            />
-            <label for="AddTaskTextInput" class="fw-medium fs-6 px-3"
-              >Add Your Task</label
-            >
-            <button
-              type="button"
-              class="btn btn-outline-primary fw-medium fs-3 rounded-4 px-4 py-1 border-2"
-              id="AddTaskBtn"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-        <div class="todo-body">
-          <ol
-            class="todo-items w-100 d-flex flex-column justify-content-center align-items-center text-start gap-4 py-3 fw-semibold"
-          ></ol>
-        </div>
-      </div>
     </main>
-
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/toastify-js"
@@ -176,6 +101,5 @@
       crossorigin="anonymous"
     ></script>
     <script type="module" src="index.js"></script>
-    <script type="module" src="firebase.js"></script>
   </body>
 </html>
