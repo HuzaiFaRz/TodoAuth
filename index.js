@@ -92,6 +92,7 @@ const toDoFunctionility = () => {
   <div class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</div>
   <div class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </div></li>`;
   showToast("Task Added", "rgb( 25, 135, 84)");
+  addTaskTextInput.value = "";
 };
 
 addTaskBtn.addEventListener("click", toDoFunctionility);

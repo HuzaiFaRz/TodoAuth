@@ -60,7 +60,7 @@ body {
   z-index: 123;
 }
 
-.logout-btn{
+.logout-btn {
   z-index: 2222;
 }
 
@@ -72,10 +72,7 @@ body {
   outline: none !important ;
 }
 
-
-
-
-ol{
+ol {
   list-style-type: decimal;
 }
 
@@ -165,7 +162,8 @@ input {
 }
 
 .todo-body {
-  height: 500px;
+  height: max-content;
+  max-height: 500px;
   overflow-y: scroll;
 }
 
