@@ -1,4 +1,5 @@
 import { auth, signInWithEmailAndPassword } from "../firebase.js";
+import { showToast } from "../index.js";
 const logInForm = document.querySelector(".login-form");
 const logInSubmitBtn = document.querySelector("#LogInBtn");
 
@@ -8,18 +9,7 @@ const resetLoginButton = () => {
   logInSubmitBtn.style.cursor = "pointer";
   logInSubmitBtn.disabled = false;
 };
-const showToast = (massege, background) => {
-  Toastify({
-    text: `${massege}`,
-    position: "center",
-    duration: 3000,
-    style: {
-      background: `${background}`,
-      color: "#fbfcf8",
-      fontSize: "18px",
-    },
-  }).showToast();
-};
+
 const logInFunctionility = () => {
   event.preventDefault();
 
@@ -58,7 +48,7 @@ const logInFunctionility = () => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      showToast(errorMessage, "rgb(255, 0, 0,0.5)");
+      showToast(errorMessage, "#B00020");
       resetLoginButton();
       logInForm.reset();
     });

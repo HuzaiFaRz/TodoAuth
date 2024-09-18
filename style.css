@@ -46,7 +46,6 @@ body {
   width: 40px;
 }
 
-.main,
 .signup-main,
 .login-main {
   background-color: var(--bg-Color);
@@ -168,7 +167,7 @@ input {
   overflow-y: scroll;
 }
 
-.logout-btn{
+.logout-btn {
   display: none;
 }
 

@@ -4,46 +4,45 @@ import {
   db,
   collection,
   addDoc,
+  getDocs,
 } from "../firebase.js";
+
+import { showToast } from "../index.js";
+
 const signUpForm = document.querySelector(".signup-form");
 const signUpSubmitBtn = document.querySelector("#SignUpBtn");
-
+const usersCollection = collection(db, "Users");
 const resetSignUpButton = () => {
   signUpSubmitBtn.innerHTML = `Sign Up`;
   signUpSubmitBtn.style.opacity = "1";
   signUpSubmitBtn.style.cursor = "pointer";
   signUpSubmitBtn.disabled = false;
 };
-const showToast = (massege, background) => {
-  Toastify({
-    text: `${massege}`,
-    position: "center",
-    duration: 3000,
-    style: {
-      background: `${background}`,
-      color: "#fbfcf8",
-      fontSize: "18px",
-    },
-  }).showToast();
-};
-const signUpFunctionility = async () => {
+const signUpFormData = new FormData(signUpForm);
+const signUpFunctionility = () => {
   event.preventDefault();
-
-  const signUpFormData = new FormData(signUpForm);
   const signUpUserInformaTion = {
     signUpName: signUpFormData.get("SignUpName"),
     signUpEmail: signUpFormData.get("SignUpEmail"),
     signUpPassword: signUpFormData.get("SignUpPassword"),
     signUpConfirmPassword: signUpFormData.get("SignUpConfirmPassword"),
+    signUpProfile: signUpFormData.get("SignUpProfile"),
+    signedUpUserTime: new Date(),
   };
-
   if (
     !signUpUserInformaTion.signUpName ||
     !signUpUserInformaTion.signUpEmail ||
     !signUpUserInformaTion.signUpPassword ||
     !signUpUserInformaTion.signUpConfirmPassword
   ) {
-    showToast("Fill All Field", "rgb(220, 53, 69)");
+    showToast("Fill All Field", "#B00020");
+    resetSignUpButton();
+    return;
+  } else if (
+    !signUpUserInformaTion.signUpProfile ||
+    !signUpUserInformaTion.signUpProfile.name
+  ) {
+    showToast("Upload Profile Photo", "#B00020");
     resetSignUpButton();
     return;
   }
@@ -51,7 +50,7 @@ const signUpFunctionility = async () => {
     signUpUserInformaTion.signUpPassword !==
     signUpUserInformaTion.signUpConfirmPassword
   ) {
-    showToast("Password Does Not Match", "rgb(220, 53, 69)");
+    showToast("Password Does Not Match", "#B00020");
     resetSignUpButton();
     return;
   }
@@ -64,34 +63,33 @@ const signUpFunctionility = async () => {
     signUpUserInformaTion.signUpEmail,
     signUpUserInformaTion.signUpPassword
   )
-    .then(async (userCredential) => {
+    .then((userCredential) => {
       const user = userCredential.user;
-      try {
-        const docRef = await addDoc(collection(db, "users"), {
-          uid: user.uid,
-          userName: signUpUserInformaTion.signUpName,
-          userEmail: signUpUserInformaTion.signUpEmail,
-        });
-        showToast(
-          `Document written with ID: ${docRef.id}`,
-          "rgb( 25, 135, 84)"
-        );
-        console.log(docRef);
-      } catch (error) {
-        showToast(`Error adding document: ${error}`, "rgb(220, 53, 69)");
-      }
-
+      const addUserInfoToDB = async () => {
+        try {
+          const docRef = await addDoc(usersCollection, {
+            userProfile: signUpUserInformaTion.signUpProfile.name,
+            userName: signUpUserInformaTion.signUpName,
+            userEmail: user.email,
+            userPassword: signUpUserInformaTion.signUpPassword,
+            userUID: user.uid,
+            time: new Date(),
+          });
+        } catch (error) {
+          showToast(error.message, "#B00020");
+        }
+      };
+      addUserInfoToDB();
       showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
       resetSignUpButton();
       signUpForm.reset();
-      // window.location.replace("../Login/login.html");
+      window.location.replace("../Login/login.html");
     })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
-      showToast(errorMessage, "rgb(220, 53, 69)");
+      showToast(errorMessage, "#B00020");
       resetSignUpButton();
-      signUpForm.reset();
     });
 };
 
