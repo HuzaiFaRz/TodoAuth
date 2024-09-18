@@ -134,7 +134,7 @@ if (logOutBtn) {
       .then(() => {
         resetLogOutButton();
         showToast("Sign Out SuccessFully", "rgb( 25, 135, 84)");
-        window.location.replace("http://127.0.0.1:5500/Login/login.html");
+        window.location.replace("Login/login.html");
       })
       .catch((error) => {
         resetLogOutButton();
