@@ -31,6 +31,8 @@ const passwordInputs = document.querySelectorAll("#password-input");
 const addTaskTextInput = document.querySelector("#AddTaskTextInput");
 const addTaskBtn = document.querySelector("#AddTaskBtn");
 const todoItems = document.querySelector(".todo-items");
+const usersCollection = collection(db, "Users");
+
 const resetLogOutButton = () => {
   logOutBtn.innerHTML = `Log Out`;
   logOutBtn.style.opacity = "1";
@@ -55,11 +57,14 @@ const getUserInfoFromDB = async () => {
       const date = new Date(
         userSignedUpSecond * 1000 + userSignedUpMilliSecond / 1e6
       );
+      console.log(doc.data());
     });
   } catch (error) {
     console.error("Error fetching user data:", error);
   }
 };
+
+getUserInfoFromDB();
 
 const toDoFunctionility = () => {
   onAuthStateChanged(auth, (user) => {
@@ -164,8 +169,6 @@ if (closeAlertBtn) {
     alertMain.style.display = "none";
   });
 }
-
-const usersCollection = collection(db, "Users");
 
 let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
 setInterval(() => {
