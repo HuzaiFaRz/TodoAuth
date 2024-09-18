@@ -108,6 +108,9 @@ window.addEventListener("load", () => {
       if (userNameDiv) {
         userNameDiv.textContent = `Hi! User`;
       }
+      if (userProfiledDiv) {
+        userProfiledDiv.setAttribute("src", "Profile-Default.jpg");
+      }
       if (logOutBtn) {
         logOutBtn.style.display = "none";
       }

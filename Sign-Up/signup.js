@@ -18,9 +18,9 @@ const resetSignUpButton = () => {
   signUpSubmitBtn.style.cursor = "pointer";
   signUpSubmitBtn.disabled = false;
 };
-const signUpFormData = new FormData(signUpForm);
-const signUpFunctionility = () => {
+const signUpFunctionility = async () => {
   event.preventDefault();
+  const signUpFormData = new FormData(signUpForm);
   const signUpUserInformaTion = {
     signUpName: signUpFormData.get("SignUpName"),
     signUpEmail: signUpFormData.get("SignUpEmail"),
@@ -58,39 +58,31 @@ const signUpFunctionility = () => {
   signUpSubmitBtn.style.opacity = "0.5";
   signUpSubmitBtn.style.cursor = "not-allowed";
   signUpSubmitBtn.disabled = true;
-  createUserWithEmailAndPassword(
-    auth,
-    signUpUserInformaTion.signUpEmail,
-    signUpUserInformaTion.signUpPassword
-  )
-    .then((userCredential) => {
-      const user = userCredential.user;
-      const addUserInfoToDB = async () => {
-        try {
-          const docRef = await addDoc(usersCollection, {
-            userProfile: signUpUserInformaTion.signUpProfile.name,
-            userName: signUpUserInformaTion.signUpName,
-            userEmail: user.email,
-            userPassword: signUpUserInformaTion.signUpPassword,
-            userUID: user.uid,
-            time: new Date(),
-          });
-        } catch (error) {
-          showToast(error.message, "#B00020");
-        }
-      };
-      addUserInfoToDB();
-      showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
-      resetSignUpButton();
-      signUpForm.reset();
-      window.location.replace("../Login/login.html");
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      showToast(errorMessage, "#B00020");
-      resetSignUpButton();
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      signUpUserInformaTion.signUpEmail,
+      signUpUserInformaTion.signUpPassword
+    );
+    const user = userCredential.user;
+    await addDoc(usersCollection, {
+      userProfile: signUpUserInformaTion.signUpProfile.name,
+      userName: signUpUserInformaTion.signUpName,
+      userEmail: user.email,
+      userPassword: signUpUserInformaTion.signUpPassword,
+      userUID: user.uid,
+      time: new Date(),
     });
+    showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
+    signUpForm.reset();
+    window.location.href = "../Login/login.html";
+  } catch (error) {
+    showToast(error.message, "#B00020");
+    resetSignUpButton();
+  } finally {
+    resetSignUpButton();
+  }
 };
 
 signUpForm.addEventListener("submit", signUpFunctionility);
