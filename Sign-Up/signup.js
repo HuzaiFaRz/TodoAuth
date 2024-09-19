@@ -76,27 +76,25 @@ const signUpFunctionility = async () => {
           console.log(a);
           getDownloadURL(userRef)
             .then((URL) => {
-              console.log(URL);
               signUpUserInformaTion.signUpProfile = URL;
               const userDocRef = doc(db, "User", userCredential.user.uid);
               setDoc(userDocRef, signUpUserInformaTion)
                 .then((b) => {
-                  console.log(b);
                   showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
                   signUpForm.reset();
                   resetSignUpButton();
                   window.location.href = "../Login/login.html";
                 })
                 .catch((error) => {
-                  console.log(error);
+                  showToast(error, "#B00020");
                 });
             })
             .catch((error) => {
-              console.log(error);
+              showToast(error, "#B00020");
             });
         })
         .catch((error) => {
-          console.log(error);
+          showToast(error, "#B00020");
         });
     })
     .catch((error) => {
