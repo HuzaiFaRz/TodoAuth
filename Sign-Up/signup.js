@@ -1,17 +1,19 @@
 import {
+  showToast,
   auth,
   createUserWithEmailAndPassword,
   db,
-  collection,
-  addDoc,
-  getDocs,
+  storage,
+  doc,
+  setDoc,
+  ref,
+  uploadBytes,
+  getDownloadURL,
 } from "../firebase.js";
-
-import { showToast } from "../index.js";
 
 const signUpForm = document.querySelector(".signup-form");
 const signUpSubmitBtn = document.querySelector("#SignUpBtn");
-const usersCollection = collection(db, "Users");
+// const usersCollection = collection(db, "Users");
 const resetSignUpButton = () => {
   signUpSubmitBtn.innerHTML = `Sign Up`;
   signUpSubmitBtn.style.opacity = "1";
@@ -24,6 +26,7 @@ const signUpFunctionility = async () => {
   const signUpUserInformaTion = {
     signUpName: signUpFormData.get("SignUpName"),
     signUpEmail: signUpFormData.get("SignUpEmail"),
+    signUpPhoneNumber: signUpFormData.get("SignUpPhoneNumber"),
     signUpPassword: signUpFormData.get("SignUpPassword"),
     signUpConfirmPassword: signUpFormData.get("SignUpConfirmPassword"),
     signUpProfile: signUpFormData.get("SignUpProfile"),
@@ -32,6 +35,7 @@ const signUpFunctionility = async () => {
   if (
     !signUpUserInformaTion.signUpName ||
     !signUpUserInformaTion.signUpEmail ||
+    !signUpUserInformaTion.signUpPhoneNumber ||
     !signUpUserInformaTion.signUpPassword ||
     !signUpUserInformaTion.signUpConfirmPassword
   ) {
@@ -59,30 +63,46 @@ const signUpFunctionility = async () => {
   signUpSubmitBtn.style.cursor = "not-allowed";
   signUpSubmitBtn.disabled = true;
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      signUpUserInformaTion.signUpEmail,
-      signUpUserInformaTion.signUpPassword
-    );
-    const user = userCredential.user;
-    await addDoc(usersCollection, {
-      userProfile: signUpUserInformaTion.signUpProfile.name,
-      userName: signUpUserInformaTion.signUpName,
-      userEmail: user.email,
-      userPassword: signUpUserInformaTion.signUpPassword,
-      userUID: user.uid,
-      time: new Date(),
+  createUserWithEmailAndPassword(
+    auth,
+    signUpUserInformaTion.signUpEmail,
+    signUpUserInformaTion.signUpPassword
+  )
+    .then((userCredential) => {
+      const user = userCredential.user;
+      const userRef = ref(storage, `User/${userCredential.user.uid}`);
+      uploadBytes(userRef, signUpUserInformaTion.signUpProfile)
+        .then((a) => {
+          console.log(a);
+          getDownloadURL(userRef)
+            .then((URL) => {
+              console.log(URL);
+              signUpUserInformaTion.signUpProfile = URL;
+              const userDocRef = doc(db, "User", userCredential.user.uid);
+              setDoc(userDocRef, signUpUserInformaTion)
+                .then((b) => {
+                  console.log(b);
+                  showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
+                  signUpForm.reset();
+                  resetSignUpButton();
+                  window.location.href = "../Login/login.html";
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+    .catch((error) => {
+      showToast(error.message, "#B00020");
+      resetSignUpButton();
     });
-    showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
-    signUpForm.reset();
-    window.location.href = "../Login/login.html";
-  } catch (error) {
-    showToast(error.message, "#B00020");
-    resetSignUpButton();
-  } finally {
-    resetSignUpButton();
-  }
 };
 
 signUpForm.addEventListener("submit", signUpFunctionility);

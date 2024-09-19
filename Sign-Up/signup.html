@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To Do Sign Up</title>
-    <link rel="shortcut icon" href="../favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="../Images/favicon.png" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -36,7 +36,6 @@
         class="signup-form px-3 py-1 d-flex flex-column justify-content-evenly align-items-center text-center rounded-2"
         id="SignUpForm"
       >
-      
         <h1 class="fs-2 fw-bold">SignUp</h1>
 
         <div
@@ -46,12 +45,13 @@
             type="file"
             class="form-control w-100 border-1 border-secondary border-opacity-25"
             id="profile-input"
-            placeholder="Profile"
+            placeholder="Choose Profile"
             name="SignUpProfile"
             accept="image/*"
-    
           />
-          <label for="profile-input" class="fw-medium fs-6">Profile</label>
+          <label for="profile-input" class="fw-medium fs-6"
+            >Choose Profile</label
+          >
         </div>
 
         <div
@@ -80,6 +80,22 @@
             value="huzaifa@gmail.com"
           />
           <label for="email-input" class="fw-medium fs-6">Email</label>
+        </div>
+
+        <div
+          class="form-floating w-100 d-flex flex-row justify-content-center align-items-center"
+        >
+          <input
+            type="number"
+            class="form-control w-100 border-1 border-secondary border-opacity-25"
+            id="phone-number-input"
+            placeholder="Phone Number"
+            name="SignUpPhoneNumber"
+            value="03147039174"
+          />
+          <label for="phone-number-input" class="fw-medium fs-6"
+            >Phone Number</label
+          >
         </div>
 
         <div
@@ -158,7 +174,7 @@
           id="GoogleBtn"
         >
           <img
-            src="../google_icon.png"
+          src="../Images/google_icon.png"
             class="position-absolute start-0 mx-2 fs-4 google-icon"
           />
           Login With Google

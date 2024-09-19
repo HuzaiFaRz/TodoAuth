@@ -1,5 +1,5 @@
-import { auth, signInWithEmailAndPassword } from "../firebase.js";
-import { showToast } from "../index.js";
+import { showToast, auth, signInWithEmailAndPassword } from "../firebase.js";
+
 const logInForm = document.querySelector(".login-form");
 const logInSubmitBtn = document.querySelector("#LogInBtn");
 
@@ -43,7 +43,7 @@ const logInFunctionility = () => {
       showToast("Log In SuccessFully", "rgb(0, 128, 0,0.5)");
       resetLoginButton();
       logInForm.reset();
-      window.location.replace("../index.html");
+      window.location.href = "../index.html";
     })
     .catch((error) => {
       const errorCode = error.code;

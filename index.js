@@ -1,25 +1,17 @@
 import {
+  showToast,
   auth,
-  signOut,
   onAuthStateChanged,
+  signOut,
   db,
-  collection,
-  addDoc,
-  getDocs,
+  storage,
+  doc,
+  getDoc,
+  setDoc,
+  ref,
+  uploadBytes,
+  getDownloadURL,
 } from "./firebase.js";
-export const showToast = (massege, background) => {
-  Toastify({
-    text: `${massege}`,
-    position: "center",
-    duration: 2000,
-    style: {
-      background: `${background}`,
-      color: "#fbfcf8",
-      fontSize: "18px",
-      letterSpacing: "2px",
-    },
-  }).showToast();
-};
 
 const logOutBtn = document.querySelector(".logout-btn");
 const userNameDiv = document.querySelector("#User-Name");
@@ -31,40 +23,12 @@ const passwordInputs = document.querySelectorAll("#password-input");
 const addTaskTextInput = document.querySelector("#AddTaskTextInput");
 const addTaskBtn = document.querySelector("#AddTaskBtn");
 const todoItems = document.querySelector(".todo-items");
-const usersCollection = collection(db, "Users");
 
 const resetLogOutButton = () => {
   logOutBtn.innerHTML = `Log Out`;
   logOutBtn.style.opacity = "1";
   logOutBtn.style.cursor = "pointer";
 };
-
-const getUserInfoFromDB = async () => {
-  try {
-    const querySnapshot = await getDocs(usersCollection);
-    querySnapshot.forEach((doc) => {
-      const docID = doc.id;
-      const { userProfile, userName, userEmail, userPassword, userUID } =
-        doc.data();
-      if (userNameDiv) {
-        userNameDiv.textContent = `Hi! ${userName}`;
-      }
-      if (userProfiledDiv) {
-        userProfiledDiv.setAttribute("src", `${userProfile}`);
-      }
-      const userSignedUpSecond = doc.data().time.seconds;
-      const userSignedUpMilliSecond = doc.data().time.nanoseconds;
-      const date = new Date(
-        userSignedUpSecond * 1000 + userSignedUpMilliSecond / 1e6
-      );
-      console.log(doc.data());
-    });
-  } catch (error) {
-    console.error("Error fetching user data:", error);
-  }
-};
-
-getUserInfoFromDB();
 
 const toDoFunctionility = () => {
   onAuthStateChanged(auth, (user) => {
@@ -89,9 +53,6 @@ const toDoFunctionility = () => {
         addTaskTextInput.value = "";
       }
     } else {
-      if (logOutBtn) {
-        logOutBtn.style.display = "none";
-      }
       if (alertMain) {
         alertMain.style.display = "flex";
       }
@@ -105,7 +66,7 @@ window.addEventListener("load", () => {
       if (alertMain) {
         alertMain.style.display = "none";
       }
-      getUserInfoFromDB();
+      getUserInfoFromDB(user.uid);
       if (logOutBtn) {
         logOutBtn.style.display = "block";
       }
@@ -114,7 +75,7 @@ window.addEventListener("load", () => {
         userNameDiv.textContent = `Hi! User`;
       }
       if (userProfiledDiv) {
-        userProfiledDiv.setAttribute("src", "Profile-Default.jpg");
+        userProfiledDiv.setAttribute("src", "Images/Profile-Default.jpg");
       }
       if (logOutBtn) {
         logOutBtn.style.display = "none";
@@ -139,7 +100,7 @@ if (logOutBtn) {
       .then(() => {
         resetLogOutButton();
         showToast("Sign Out SuccessFully", "rgb( 25, 135, 84)");
-        window.location.replace("Login/login.html");
+        window.location.href = "Login/login.html";
       })
       .catch((error) => {
         resetLogOutButton();
@@ -164,14 +125,27 @@ if (passwordIcons) {
     });
   });
 }
+
 if (closeAlertBtn) {
   closeAlertBtn.addEventListener("click", () => {
     alertMain.style.display = "none";
   });
 }
 
-let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
-setInterval(() => {
-  let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
-  document.body.style.backgroundColor = randomlyNumber;
-}, 1001000);
+// let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
+// setInterval(() => {
+//   let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
+//   document.body.style.backgroundColor = randomlyNumber;
+// }, 1001000);
+
+const getUserInfoFromDB = (uid) => {
+  const userDocRef = doc(db, "User", uid);
+  getDoc(userDocRef).then((data) => {
+    if (userNameDiv) {
+      userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
+    }
+    if (userProfiledDiv) {
+      userProfiledDiv.setAttribute("src", `${data.data().signUpProfile}}`);
+    }
+  });
+};

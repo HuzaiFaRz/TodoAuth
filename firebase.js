@@ -3,15 +3,21 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut,
   onAuthStateChanged,
+  signOut,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import {
   getFirestore,
-  collection,
-  addDoc,
-  getDocs,
+  doc,
+  setDoc,
+  getDoc,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 const firebaseConfig = {
   apiKey: "AIzaSyDMskxzV8Md7OLmdzyknzxMjw-W-BLkR1Y",
   authDomain: "authdash-ae8c0.firebaseapp.com",
@@ -25,17 +31,36 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
+
+const showToast = (massege, background) => {
+  Toastify({
+    text: `${massege}`,
+    position: "center",
+    duration: 2000,
+    style: {
+      background: `${background}`,
+      color: "#fbfcf8",
+      fontSize: "18px",
+      letterSpacing: "2px",
+    },
+  }).showToast();
+};
 
 export {
+  showToast,
   auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut,
   onAuthStateChanged,
+  signOut,
   db,
-  collection,
-  addDoc,
-  getDocs,
+  storage,
+  doc,
+  setDoc,
+  getDoc,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+
 };
-
-

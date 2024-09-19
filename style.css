@@ -94,6 +94,22 @@ input {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
 }
 
+
+
+#User-Profile{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+}
+
+#phone-number-input::-webkit-outer-spin-button,
+#phone-number-input::-webkit-inner-spin-button,
+#profile-input::-webkit-file-upload-button {
+  display: none !important;
+}
+
 #FacebookBtn {
   background-color: #4367b2;
 }
