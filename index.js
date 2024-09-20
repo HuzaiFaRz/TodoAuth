@@ -40,12 +40,10 @@ const resetTodoAddButton = () => {
   addTaskBtn.style.cursor = "pointer";
 };
 
-console.log(auth.currentUser);
-
 const toDoFunctionility = () => {
-  getTodoFromDB(auth.currentUser.uid);
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      getTodoFromDB(auth.currentUser.uid);
       const uid = user.uid;
       if (addTaskTextInput) {
         if (!addTaskTextInput.value) {
@@ -90,8 +88,8 @@ const toDoFunctionility = () => {
 
 window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
-    getTodoFromDB(auth.currentUser.uid);
     if (user) {
+      getTodoFromDB(auth.currentUser.uid);
       if (alertMain) {
         alertMain.style.display = "none";
       }
@@ -140,8 +138,6 @@ const getTodoFromDB = async (uid) => {
     );
 
     const querySnapshot = await getDocs(queryTodo);
-
-
 
     if (todoItems) {
       todoItems.innerHTML = "";
