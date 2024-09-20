@@ -17,6 +17,7 @@ import {
   query,
   where,
   deleteDoc ,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import {
   getStorage,
@@ -74,4 +75,5 @@ export {
   query,
   where,
   deleteDoc ,
+  updateDoc,
 };

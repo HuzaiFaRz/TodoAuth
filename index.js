@@ -13,6 +13,7 @@ import {
   query,
   where,
   deleteDoc,
+  updateDoc,
 } from "./firebase.js";
 
 const logOutBtn = document.querySelector(".logout-btn");
@@ -26,6 +27,9 @@ const addTaskTextInput = document.querySelector("#AddTaskTextInput");
 const addTaskBtn = document.querySelector("#AddTaskBtn");
 const todoItems = document.querySelector(".todo-items");
 const taskExistDiv = document.querySelector(".task-exist-div");
+const updateTaskBtn = document.querySelector("#UpdateTaskBtn");
+
+updateTaskBtn.style.display = "none";
 
 const resetLogOutButton = () => {
   logOutBtn.disabled = false;
@@ -41,6 +45,14 @@ const resetTodoAddButton = () => {
   addTaskBtn.style.cursor = "pointer";
 };
 
+const resetUpdateTaskButton = () => {
+  updateTaskBtn.disabled = false;
+  updateTaskBtn.innerHTML = `Edit`;
+  updateTaskBtn.style.opacity = "1";
+  updateTaskBtn.style.cursor = "pointer";
+  updateTaskBtn.style.display = "none";
+};
+
 const toDoFunctionility = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -54,10 +66,11 @@ const toDoFunctionility = () => {
       }
 
       const todoDescription = {
-        todotext: addTaskTextInput.value,
+        todoText: addTaskTextInput.value,
         todoCreatedUserEmail: auth.currentUser.email,
         todoCreatedUserUID: auth.currentUser.uid,
         todoCreatedTime: new Date(),
+        todoCompleted: false,
       };
 
       const todosCollection = collection(db, "Todos");
@@ -116,13 +129,14 @@ const getTodoFromDB = async (uid) => {
     }
 
     querySnapshot.forEach((doc) => {
-      const docdata = doc.data();
-      const { todotext } = docdata;
+      const docData = doc.data();
+
+      const { todoText } = docData;
       const todoDataShowing = ` <li  class="task w-100 gap-1 px-3 py-2 border-bottom border-2 border-black">
-      <span class="task-text fs-6 fw-medium text-dark"> ${todotext}</span>
+      <span id = "${todoText}" class="task-text fs-6 fw-medium text-dark"> ${todoText}</span>
       <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2" >
-      <div class="task-edit-btn btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</div>
-      <div id = ${doc.id}   class="task-delete-btn btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </div></li>`;
+      <button id = ${doc.id}  class="task-edit-btn btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</button>
+      <button id = ${doc.id}   class="task-delete-btn btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </button></li>`;
 
       if (todoItems) {
         todoItems.innerHTML += todoDataShowing;
@@ -130,14 +144,41 @@ const getTodoFromDB = async (uid) => {
 
       const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
       const taskEditBtn = document.querySelectorAll(".task-edit-btn");
-
+      const taskText = document.querySelectorAll(".task-text");
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {
         taskDeleteBtnElem.addEventListener("click", function () {
           taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
           taskDeleteBtnElem.style.opacity = "0.5";
           taskDeleteBtnElem.style.cursor = "not-allowed";
-          addTaskBtn.disabled = true;
+          taskDeleteBtnElem.disabled = true;
           deleteTodo(this.id);
+        });
+      });
+
+      Array.from(taskEditBtn).forEach((taskEditBtnElem, index) => {
+        taskEditBtnElem.addEventListener("click", function () {
+          const currenttaskID = this.id;
+          const currentTaskText = taskText[index].id;
+
+          if (addTaskTextInput) {
+            addTaskTextInput.value = currentTaskText;
+            if (addTaskTextInput.value === currentTaskText) {
+              taskEditBtnElem.innerHTML = "Editing";
+              taskEditBtnElem.disabled = true;
+              addTaskBtn.style.display = "none";
+              updateTaskBtn.style.display = "block";
+              updateTaskBtn.addEventListener("click", () => {
+                updateTodo(currenttaskID, addTaskTextInput.value);
+                updateTaskBtn.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
+                updateTaskBtn.style.opacity = "0.5";
+                updateTaskBtn.style.cursor = "not-allowed";
+                updateTaskBtn.disabled = true;
+                taskEditBtnElem.innerHTML = "Edit";
+                taskEditBtnElem.disabled = false;
+                taskEditBtnElem.innerHTML = `Edit`;
+              });
+            }
+          }
         });
       });
 
@@ -153,11 +194,34 @@ const getTodoFromDB = async (uid) => {
   }
 };
 
-const deleteTodo = async (e) => {
-  const docRef = doc(db, "Todos", e);
-  await deleteDoc(docRef);
-  showToast("Task Deleted SuccessFully", "rgb( 25, 135, 84)");
-  getTodoFromDB(auth.currentUser.uid);
+const deleteTodo = async (deletedTodoID) => {
+  try {
+    const docRef = doc(db, "Todos", deletedTodoID);
+    await deleteDoc(docRef);
+    getTodoFromDB(auth.currentUser.uid);
+    showToast("Task Deleted SuccessFully", "rgb( 25, 135, 84)");
+    addTaskTextInput.value = "";
+  } catch (error) {
+    showToast(error, "#B00020");
+  }
+};
+
+const updateTodo = async (editTodoID, editTodoText) => {
+  try {
+    const docRef = doc(db, "Todos", editTodoID);
+    await updateDoc(docRef, {
+      todoText: editTodoText,
+      editingTime: new Date(),
+    });
+    addTaskBtn.style.display = "block";
+    resetUpdateTaskButton();
+    getTodoFromDB(auth.currentUser.uid);
+    showToast("Task Updated Successfully", "rgb(25, 135, 84)");
+    addTaskTextInput.value = "";
+  } catch (error) {
+    showToast(error, "#B00020");
+    console.log(error);
+  }
 };
 
 window.addEventListener("load", () => {
