@@ -70,14 +70,14 @@ const signUpFunctionility = async () => {
   )
     .then((userCredential) => {
       const user = userCredential.user;
-      const userRef = ref(storage, `User/${userCredential.user.uid}`);
+      const userRef = ref(storage, `Users/${userCredential.user.uid}`);
       uploadBytes(userRef, signUpUserInformaTion.signUpProfile)
         .then((a) => {
           console.log(a);
           getDownloadURL(userRef)
             .then((URL) => {
               signUpUserInformaTion.signUpProfile = URL;
-              const userDocRef = doc(db, "User", userCredential.user.uid);
+              const userDocRef = doc(db, "Users", userCredential.user.uid);
               setDoc(userDocRef, signUpUserInformaTion)
                 .then((b) => {
                   showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");

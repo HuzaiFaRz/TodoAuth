@@ -4,13 +4,14 @@ import {
   onAuthStateChanged,
   signOut,
   db,
-  storage,
   doc,
   getDoc,
-  setDoc,
   ref,
-  uploadBytes,
-  getDownloadURL,
+  getDocs,
+  collection,
+  addDoc,
+  query,
+  where,
 } from "./firebase.js";
 
 const logOutBtn = document.querySelector(".logout-btn");
@@ -23,35 +24,62 @@ const passwordInputs = document.querySelectorAll("#password-input");
 const addTaskTextInput = document.querySelector("#AddTaskTextInput");
 const addTaskBtn = document.querySelector("#AddTaskBtn");
 const todoItems = document.querySelector(".todo-items");
+const taskExistDiv = document.querySelector(".task-exist-div");
 
 const resetLogOutButton = () => {
+  logOutBtn.disabled = false;
   logOutBtn.innerHTML = `Log Out`;
   logOutBtn.style.opacity = "1";
   logOutBtn.style.cursor = "pointer";
 };
 
+const resetTodoAddButton = () => {
+  addTaskBtn.disabled = false;
+  addTaskBtn.innerHTML = `Add`;
+  addTaskBtn.style.opacity = "1";
+  addTaskBtn.style.cursor = "pointer";
+};
+
+console.log(auth.currentUser);
+
 const toDoFunctionility = () => {
+  getTodoFromDB(auth.currentUser.uid);
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const uid = user.uid;
-
       if (addTaskTextInput) {
         if (!addTaskTextInput.value) {
           showToast("Write Task In Input", "#B00020");
           return;
         }
       }
-      if (todoItems) {
-        todoItems.innerHTML += ` <li  class="task w-100 gap-1 px-3 py-2 border-bottom border-2 border-black">
-  <span class="task-text fs-6 fw-medium text-dark"> ${addTaskTextInput.value}</span> 
-  <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2" >
-  <div class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</div>
-  <div class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </div></li>`;
-      }
-      showToast("Task Added", "rgb( 25, 135, 84)");
-      if (addTaskTextInput) {
-        addTaskTextInput.value = "";
-      }
+
+      const todoDescription = {
+        todotext: addTaskTextInput.value,
+        todoCreatedUserEmail: auth.currentUser.email,
+        todoCreatedUserUID: auth.currentUser.uid,
+        todoCreatedTime: new Date(),
+      };
+
+      const todosCollection = collection(db, "Todos");
+      addTaskBtn.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
+      addTaskBtn.style.opacity = "0.5";
+      addTaskBtn.style.cursor = "not-allowed";
+      addTaskBtn.disabled = true;
+
+      addDoc(todosCollection, todoDescription)
+        .then((snapShot) => {
+          console.log("TASK HAS BEEN ADD DB");
+          showToast("Task Added", "rgb( 25, 135, 84)");
+          resetTodoAddButton();
+          if (addTaskTextInput) {
+            addTaskTextInput.value = "";
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          resetTodoAddButton();
+        });
     } else {
       if (alertMain) {
         alertMain.style.display = "flex";
@@ -62,6 +90,7 @@ const toDoFunctionility = () => {
 
 window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
+    getTodoFromDB(auth.currentUser.uid);
     if (user) {
       if (alertMain) {
         alertMain.style.display = "none";
@@ -87,6 +116,62 @@ window.addEventListener("load", () => {
   });
 });
 
+const getUserInfoFromDB = (uid) => {
+  const userDocRef = doc(db, "Users", uid);
+  getDoc(userDocRef)
+    .then((data) => {
+      if (userNameDiv) {
+        userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
+      }
+      if (userProfiledDiv) {
+        userProfiledDiv.setAttribute("src", `${data.data().signUpProfile}}`);
+      }
+    })
+    .catch((error) => {
+      showToast(error, "#B00020");
+    });
+};
+
+const getTodoFromDB = async (uid) => {
+  try {
+    const queryTodo = query(
+      collection(db, "Todos"),
+      where("todoCreatedUserUID", "==", uid)
+    );
+
+    const querySnapshot = await getDocs(queryTodo);
+
+
+
+    if (todoItems) {
+      todoItems.innerHTML = "";
+    }
+
+    querySnapshot.forEach((doc) => {
+      const docdata = doc.data();
+      const { todotext } = docdata;
+      const todoDataShowing = ` <li  class="task w-100 gap-1 px-3 py-2 border-bottom border-2 border-black">
+      <span class="task-text fs-6 fw-medium text-dark"> ${todotext}</span>
+      <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2" >
+      <div class="task-edit btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</div>
+      <div class="task-delete btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </div></li>`;
+
+      if (todoItems) {
+        todoItems.innerHTML += todoDataShowing;
+      }
+
+      resetTodoAddButton();
+    });
+    if (querySnapshot.empty) {
+      if (todoItems) {
+        todoItems.innerHTML = `<h5 class="text-center w-100 fs-5">No Task Has Been Added</h5>`;
+      }
+    }
+  } catch (error) {
+    showToast(error, "#B00020");
+  }
+};
+
 if (addTaskBtn) {
   addTaskBtn.addEventListener("click", toDoFunctionility);
 }
@@ -96,6 +181,7 @@ if (logOutBtn) {
     logOutBtn.innerHTML = ` Log Out <i class="spinner-border spinner-border-sm text-light" role="status"></i>`;
     logOutBtn.style.opacity = "0.5";
     logOutBtn.style.cursor = "not-allowed";
+    logOutBtn.disabled = true;
     signOut(auth)
       .then(() => {
         resetLogOutButton();
@@ -131,21 +217,8 @@ if (closeAlertBtn) {
     alertMain.style.display = "none";
   });
 }
-
 // let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
 // setInterval(() => {
 //   let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
 //   document.body.style.backgroundColor = randomlyNumber;
 // }, 1001000);
-
-const getUserInfoFromDB = (uid) => {
-  const userDocRef = doc(db, "User", uid);
-  getDoc(userDocRef).then((data) => {
-    if (userNameDiv) {
-      userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
-    }
-    if (userProfiledDiv) {
-      userProfiledDiv.setAttribute("src", `${data.data().signUpProfile}}`);
-    }
-  });
-};
