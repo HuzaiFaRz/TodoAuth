@@ -246,8 +246,8 @@ input {
   }
 
   #AddTaskBtn,
-  .task-edit,
-  .task-delete {
+  .task-edit-btn,
+  .task-delete-btn {
     font-size: 15px !important;
     padding: 5px 20px !important;
   }
