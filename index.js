@@ -30,6 +30,12 @@ const taskExistDiv = document.querySelector(".task-exist-div");
 const updateTaskBtn = document.querySelector("#UpdateTaskBtn");
 
 updateTaskBtn.style.display = "none";
+const tooltipTriggerList = document.querySelectorAll(
+  '[data-bs-toggle="tooltip"]'
+);
+const tooltipList = [...tooltipTriggerList].map(
+  (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+);
 
 const resetLogOutButton = () => {
   logOutBtn.disabled = false;
@@ -47,7 +53,7 @@ const resetTodoAddButton = () => {
 
 const resetUpdateTaskButton = () => {
   updateTaskBtn.disabled = false;
-  updateTaskBtn.innerHTML = `Edit`;
+  updateTaskBtn.innerHTML = `Update`;
   updateTaskBtn.style.opacity = "1";
   updateTaskBtn.style.cursor = "pointer";
   updateTaskBtn.style.display = "none";
@@ -81,7 +87,6 @@ const toDoFunctionility = () => {
 
       addDoc(todosCollection, todoDescription)
         .then((snapShot) => {
-          console.log("TASK HAS BEEN ADD DB");
           showToast("Task Added", "rgb( 25, 135, 84)");
           resetTodoAddButton();
           if (addTaskTextInput) {
@@ -128,23 +133,66 @@ const getTodoFromDB = async (uid) => {
       todoItems.innerHTML = "";
     }
 
-    querySnapshot.forEach((doc) => {
-      const docData = doc.data();
+    querySnapshot.forEach((data) => {
+      const docData = data.data();
 
       const { todoText } = docData;
-      const todoDataShowing = ` <li  class="task w-100 gap-1 px-3 py-2 border-bottom border-2 border-black">
-      <span id = "${todoText}" class="task-text fs-6 fw-medium text-dark"> ${todoText}</span>
-      <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2" >
-      <button id = ${doc.id}  class="task-edit-btn btn btn-outline-success fw-medium fs-5 rounded-4 px-5 py-2 border-1">Edit</button>
-      <button id = ${doc.id}   class="task-delete-btn btn btn-outline-danger fw-medium fs-5 rounded-4 px-5 py-2 border-1"> Delete</div> </button></li>`;
+      const todoDataShowing = `     <li
+              class="task w-100 gap-1 py-2 px-3 border-bottom border-2 border-black"
+            >
+              <span
+                id="${todoText}"
+                class="task-text w-100 fs-6 fw-medium text-dark"
+              >
+                ${todoText}</span
+              >
+
+              <div
+                class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2 gap-3 mt-3"
+              >
+                <button
+                  id="${data.id}"
+                  class="task-edit-btn btn btn-outline-success fw-medium fs-6 rounded-4 px-4 py-2 border-1"
+                  title="Edit Task"
+                >
+                  Edit
+                </button>
+                <button
+                  id="${data.id}"
+                  class="task-delete-btn btn btn-outline-danger fw-medium fs-6 rounded-4 px-4 py-2 border-1"
+                  title="Delete Task"
+                >
+                  Delete
+                </button>
+                <button
+                  id="${data.id}"
+                  class="task-complete-btn btn btn-outline-danger fw-medium fs-6 rounded-4 px-4 py-2 border-1"
+                  title="Marked As Completed"
+                >InComplete <i class="bi bi-exclamation-circle-fill"></i>
+                </button>
+              </div>
+            </li>`;
 
       if (todoItems) {
         todoItems.innerHTML += todoDataShowing;
       }
-
       const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
       const taskEditBtn = document.querySelectorAll(".task-edit-btn");
+      const taskCompleteBtn = document.querySelectorAll(".task-complete-btn");
       const taskText = document.querySelectorAll(".task-text");
+
+      // if (docData.todoCompleted) {
+      //   Array.from(taskCompleteBtn).forEach((taskCompleteBtnElem) => {
+      //     taskCompleteBtnElem.innerHTML = `Completed <i class="bi bi-check2-circle"></i>`;
+      //     taskCompleteBtnElem.style.backgroundColor = "#198754";
+      //     taskCompleteBtnElem.style.color = "white";
+      //     taskCompleteBtnElem.style.borderColor = "white";
+      //     taskCompleteBtnElem.style.opacity = "1";
+      //     taskCompleteBtnElem.style.cursor = "not-allowed";
+      //     taskCompleteBtnElem.disabled = true;
+      //   });
+      // }
+
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {
         taskDeleteBtnElem.addEventListener("click", function () {
           taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
@@ -173,7 +221,6 @@ const getTodoFromDB = async (uid) => {
                 updateTaskBtn.style.opacity = "0.5";
                 updateTaskBtn.style.cursor = "not-allowed";
                 updateTaskBtn.disabled = true;
-                taskEditBtnElem.innerHTML = "Edit";
                 taskEditBtnElem.disabled = false;
                 taskEditBtnElem.innerHTML = `Edit`;
               });
@@ -181,6 +228,35 @@ const getTodoFromDB = async (uid) => {
           }
         });
       });
+
+      // Array.from(taskCompleteBtn).forEach((taskCompleteBtnElem) => {
+      //   taskCompleteBtnElem.addEventListener("click", function () {
+      //     this.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
+      //     this.style.opacity = "0.5";
+      //     this.style.cursor = "not-allowed";
+      //     this.disabled = true;
+      //     const markedTodoComplete = async () => {
+      //       try {
+      //         const docRef = doc(db, "Todos", this.id);
+      //         await updateDoc(docRef, {
+      //           todoCompleted: true,
+      //         });
+      //         this.innerHTML = `Completed <i class="bi bi-check2-circle"></i>`;
+      //         this.style.backgroundColor = "#198754";
+      //         this.style.opacity = "1";
+      //         this.style.cursor = "not-allowed";
+      //         this.disabled = false;
+      //         getTodoFromDB(auth.currentUser.uid);
+      //         showToast("Task Completed", "rgb(25, 135, 84)");
+      //         addTaskTextInput.value = "";
+      //       } catch (error) {
+      //         showToast(error, "#B00020");
+      //         console.log(error);
+      //       }
+      //     };
+      //     markedTodoComplete();
+      //   });
+      // });
 
       resetTodoAddButton();
     });

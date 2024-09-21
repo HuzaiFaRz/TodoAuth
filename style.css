@@ -266,3 +266,7 @@ input {
     font-size: 14px;
   }
 }
+.custom-tooltip {
+  --bs-tooltip-bg: var(--bd-violet-bg);
+  --bs-tooltip-color: var(--bs-white);
+}
