@@ -16,14 +16,16 @@ import {
   getDocs,
   query,
   where,
-  deleteDoc ,
+  deleteDoc,
   updateDoc,
+  orderBy,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import {
   getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
+
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 const firebaseConfig = {
   apiKey: "AIzaSyDMskxzV8Md7OLmdzyknzxMjw-W-BLkR1Y",
@@ -74,6 +76,7 @@ export {
   collection,
   query,
   where,
-  deleteDoc ,
+  deleteDoc,
   updateDoc,
+  orderBy,
 };

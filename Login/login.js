@@ -1,5 +1,4 @@
 import { showToast, auth, signInWithEmailAndPassword } from "../firebase.js";
-
 const logInForm = document.querySelector(".login-form");
 const logInSubmitBtn = document.querySelector("#LogInBtn");
 
@@ -55,3 +54,14 @@ const logInFunctionility = () => {
 };
 
 logInForm.addEventListener("submit", logInFunctionility);
+
+const passwordsIconsFunctionility = () => {
+  const passwordInput = document.querySelector("#password-input");
+  const passwordShowHide = () =>
+    (passwordInput.type =
+      passwordInput.type === "password" ? "text" : "password");
+
+  const passwordIcon = document.querySelector(".password-icon");
+  passwordIcon.addEventListener("click", passwordShowHide);
+};
+passwordsIconsFunctionility();

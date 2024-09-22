@@ -14,22 +14,23 @@ import {
   where,
   deleteDoc,
   updateDoc,
+  orderBy,
 } from "./firebase.js";
 
 const logOutBtn = document.querySelector(".logout-btn");
 const userNameDiv = document.querySelector("#User-Name");
-const userProfiledDiv = document.querySelector("#User-Profile");
+const userProfileLink = document.querySelector(".User-Profile-Link");
+const userProfileDiv = document.querySelector("#User-Profile");
 const alertMain = document.querySelector(".alert-main");
 const closeAlertBtn = document.querySelector("#closeAlertBtn");
-const passwordIcons = document.querySelectorAll(".password-icon");
-const passwordInputs = document.querySelectorAll("#password-input");
 const addTaskTextInput = document.querySelector("#AddTaskTextInput");
 const addTaskBtn = document.querySelector("#AddTaskBtn");
 const todoItems = document.querySelector(".todo-items");
-const taskExistDiv = document.querySelector(".task-exist-div");
+// const taskExistDiv = document.querySelector(".task-exist-div");
 const updateTaskBtn = document.querySelector("#UpdateTaskBtn");
 
 updateTaskBtn.style.display = "none";
+
 const tooltipTriggerList = document.querySelectorAll(
   '[data-bs-toggle="tooltip"]'
 );
@@ -62,13 +63,14 @@ const resetUpdateTaskButton = () => {
 const toDoFunctionility = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      userProfileLink.setAttribute("href", "./DashBoard/dashboard.html");
+      console.log(userProfileLink);
       getTodoFromDB(auth.currentUser.uid);
       const uid = user.uid;
-      if (addTaskTextInput) {
-        if (!addTaskTextInput.value) {
-          showToast("Write Task In Input", "#B00020");
-          return;
-        }
+
+      if (!addTaskTextInput.value) {
+        showToast("Write Task In Input", "#B00020");
+        return;
       }
 
       const todoDescription = {
@@ -89,31 +91,26 @@ const toDoFunctionility = () => {
         .then((snapShot) => {
           showToast("Task Added", "rgb( 25, 135, 84)");
           resetTodoAddButton();
-          if (addTaskTextInput) {
-            addTaskTextInput.value = "";
-          }
+
+          addTaskTextInput.value = "";
         })
         .catch((error) => {
           console.log(error);
           resetTodoAddButton();
         });
     } else {
-      if (alertMain) {
-        alertMain.style.display = "flex";
-      }
+      userProfileLink.setAttribute("href", "#");
+      alertMain.style.display = "flex";
     }
   });
 };
+
 const getUserInfoFromDB = (uid) => {
   const userDocRef = doc(db, "Users", uid);
   getDoc(userDocRef)
     .then((data) => {
-      if (userNameDiv) {
-        userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
-      }
-      if (userProfiledDiv) {
-        userProfiledDiv.setAttribute("src", `${data.data().signUpProfile}}`);
-      }
+      userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
+      userProfileDiv.setAttribute("src", `${data.data().signUpProfile}}`);
     })
     .catch((error) => {
       showToast(error, "#B00020");
@@ -124,14 +121,13 @@ const getTodoFromDB = async (uid) => {
   try {
     const queryTodo = query(
       collection(db, "Todos"),
-      where("todoCreatedUserUID", "==", uid)
+      where("todoCreatedUserUID", "==", uid),
+      orderBy("time", "uisadsadd")
     );
 
     const querySnapshot = await getDocs(queryTodo);
 
-    if (todoItems) {
-      todoItems.innerHTML = "";
-    }
+    todoItems.innerHTML = "";
 
     querySnapshot.forEach((data) => {
       const docData = data.data();
@@ -164,38 +160,27 @@ const getTodoFromDB = async (uid) => {
                 >
                   Delete
                 </button>
-                <button
-                  id="${data.id}"
-                  class="task-complete-btn btn btn-outline-danger fw-medium fs-6 rounded-4 px-4 py-2 border-1"
-                  title="Marked As Completed"
-                >InComplete <i class="bi bi-exclamation-circle-fill"></i>
-                </button>
+               
+
+                  <input type="checkbox"  class="taskMarkedCheckbox"  id="${data.id}" />
+              
+                
               </div>
             </li>`;
 
-      if (todoItems) {
-        todoItems.innerHTML += todoDataShowing;
-      }
-      const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
-      const taskEditBtn = document.querySelectorAll(".task-edit-btn");
-      const taskCompleteBtn = document.querySelectorAll(".task-complete-btn");
+      todoItems.innerHTML += todoDataShowing;
+
       const taskText = document.querySelectorAll(".task-text");
 
-      // if (docData.todoCompleted) {
-      //   Array.from(taskCompleteBtn).forEach((taskCompleteBtnElem) => {
-      //     taskCompleteBtnElem.innerHTML = `Completed <i class="bi bi-check2-circle"></i>`;
-      //     taskCompleteBtnElem.style.backgroundColor = "#198754";
-      //     taskCompleteBtnElem.style.color = "white";
-      //     taskCompleteBtnElem.style.borderColor = "white";
-      //     taskCompleteBtnElem.style.opacity = "1";
-      //     taskCompleteBtnElem.style.cursor = "not-allowed";
-      //     taskCompleteBtnElem.disabled = true;
-      //   });
-      // }
+      const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
+      const taskEditBtn = document.querySelectorAll(".task-edit-btn");
+      const taskMarkedCheckbox = document.querySelectorAll(
+        ".taskMarkedCheckbox"
+      );
 
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {
         taskDeleteBtnElem.addEventListener("click", function () {
-          taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
+          taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-danger" role="status"></i><span/>`;
           taskDeleteBtnElem.style.opacity = "0.5";
           taskDeleteBtnElem.style.cursor = "not-allowed";
           taskDeleteBtnElem.disabled = true;
@@ -203,7 +188,7 @@ const getTodoFromDB = async (uid) => {
         });
       });
 
-      Array.from(taskEditBtn).forEach((taskEditBtnElem, index) => {
+      Array.from(taskEditBtn).forEach((taskEditBtnElem) => {
         taskEditBtnElem.addEventListener("click", function () {
           const currenttaskID = this.id;
           const currentTaskText = taskText[index].id;
@@ -229,44 +214,29 @@ const getTodoFromDB = async (uid) => {
         });
       });
 
-      // Array.from(taskCompleteBtn).forEach((taskCompleteBtnElem) => {
-      //   taskCompleteBtnElem.addEventListener("click", function () {
-      //     this.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
-      //     this.style.opacity = "0.5";
-      //     this.style.cursor = "not-allowed";
-      //     this.disabled = true;
-      //     const markedTodoComplete = async () => {
-      //       try {
-      //         const docRef = doc(db, "Todos", this.id);
-      //         await updateDoc(docRef, {
-      //           todoCompleted: true,
-      //         });
-      //         this.innerHTML = `Completed <i class="bi bi-check2-circle"></i>`;
-      //         this.style.backgroundColor = "#198754";
-      //         this.style.opacity = "1";
-      //         this.style.cursor = "not-allowed";
-      //         this.disabled = false;
-      //         getTodoFromDB(auth.currentUser.uid);
-      //         showToast("Task Completed", "rgb(25, 135, 84)");
-      //         addTaskTextInput.value = "";
-      //       } catch (error) {
-      //         showToast(error, "#B00020");
-      //         console.log(error);
-      //       }
-      //     };
-      //     markedTodoComplete();
-      //   });
-      // });
+      Array.from(taskMarkedCheckbox).forEach((taskMarkedCheckboxElem) => {
+        // if (data.data().todoCompleted === true) {
+        //   taskMarkedCheckboxElem.checked = true;
+        // } else {
+        //   taskMarkedCheckboxElem.checked = false;
+        // }
+        taskMarkedCheckboxElem.addEventListener("click", function () {
+          if (taskMarkedCheckboxElem.checked === true) {
+            markedTodoCompleted(this.id);
+          } else {
+            markedTodoUnCompleted(this.id);
+          }
+        });
+      });
 
       resetTodoAddButton();
     });
     if (querySnapshot.empty) {
-      if (todoItems) {
-        todoItems.innerHTML = `<h5 class="text-center w-100 fs-5">No Task Has Been Added</h5>`;
-      }
+      todoItems.innerHTML = `<h5 class="text-center w-100 fs-5">No Task Has Been Added</h5>`;
     }
   } catch (error) {
     showToast(error, "#B00020");
+    console.log(error);
   }
 };
 
@@ -275,7 +245,7 @@ const deleteTodo = async (deletedTodoID) => {
     const docRef = doc(db, "Todos", deletedTodoID);
     await deleteDoc(docRef);
     getTodoFromDB(auth.currentUser.uid);
-    showToast("Task Deleted SuccessFully", "rgb( 25, 135, 84)");
+    showToast("Task Deleted SuccessFully", "#B00020");
     addTaskTextInput.value = "";
   } catch (error) {
     showToast(error, "#B00020");
@@ -300,80 +270,74 @@ const updateTodo = async (editTodoID, editTodoText) => {
   }
 };
 
+const markedTodoCompleted = async (completedTodoID) => {
+  try {
+    const docRef = doc(db, "Todos", completedTodoID);
+    await updateDoc(docRef, {
+      todoCompleted: true,
+    });
+    showToast("Task Marked As Completed", "rgb(25, 135, 84)");
+  } catch (error) {
+    showToast(error, "#B00020");
+    console.log(error);
+  }
+};
+const markedTodoUnCompleted = async (unCompleteTodoID) => {
+  try {
+    const docRef = doc(db, "Todos", unCompleteTodoID);
+    await updateDoc(docRef, {
+      todoCompleted: false,
+    });
+    showToast("Task Marked As InCompleted", "#B00020");
+  } catch (error) {
+    showToast(error, "#B00020");
+    console.log(error);
+  }
+};
+
 window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       getTodoFromDB(auth.currentUser.uid);
-
-      if (alertMain) {
-        alertMain.style.display = "none";
-      }
+      alertMain.style.display = "none";
       getUserInfoFromDB(user.uid);
-      if (logOutBtn) {
-        logOutBtn.style.display = "block";
-      }
+      logOutBtn.style.display = "block";
     } else {
-      if (userNameDiv) {
-        userNameDiv.textContent = `Hi! User`;
-      }
-      if (userProfiledDiv) {
-        userProfiledDiv.setAttribute("src", "Images/Profile-Default.jpg");
-      }
-      if (logOutBtn) {
-        logOutBtn.style.display = "none";
-      }
-      if (alertMain) {
-        alertMain.style.display = "flex";
-      }
+      userNameDiv.textContent = `Hi! User`;
+      userProfileDiv.setAttribute("src", "Images/Profile-Default.jpg");
+      logOutBtn.style.display = "none";
+      alertMain.style.display = "flex";
     }
   });
 });
 
-if (addTaskBtn) {
-  addTaskBtn.addEventListener("click", toDoFunctionility);
-}
+addTaskBtn.addEventListener("click", toDoFunctionility);
 
-if (logOutBtn) {
-  logOutBtn.addEventListener("click", () => {
-    logOutBtn.innerHTML = ` Log Out <i class="spinner-border spinner-border-sm text-light" role="status"></i>`;
-    logOutBtn.style.opacity = "0.5";
-    logOutBtn.style.cursor = "not-allowed";
-    logOutBtn.disabled = true;
-    signOut(auth)
-      .then(() => {
-        resetLogOutButton();
-        showToast("Sign Out SuccessFully", "rgb( 25, 135, 84)");
-        window.location.href = "Login/login.html";
-      })
-      .catch((error) => {
-        resetLogOutButton();
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        showToast(errorMessage, "#B00020");
-      });
-  });
-}
-
-if (passwordIcons) {
-  Array.from(passwordIcons).forEach((passwordIconElem, passwordIconIndex) => {
-    passwordIconElem.addEventListener("click", () => {
-      passwordIconElem.classList.toggle("password-icon-active");
-      if (passwordIconElem.classList.contains("password-icon-active")) {
-        passwordIconElem.classList.replace("bi-eye-slash-fill", "bi-eye-fill");
-        passwordInputs[passwordIconIndex].setAttribute("type", "text");
-      } else {
-        passwordIconElem.classList.replace("bi-eye-fill", "bi-eye-slash-fill");
-        passwordInputs[passwordIconIndex].setAttribute("type", "password");
-      }
+logOutBtn.addEventListener("click", () => {
+  logOutBtn.innerHTML = ` Log Out <i class="spinner-border spinner-border-sm text-light" role="status"></i>`;
+  logOutBtn.style.opacity = "0.5";
+  logOutBtn.style.cursor = "not-allowed";
+  logOutBtn.disabled = true;
+  signOut(auth)
+    .then(() => {
+      resetLogOutButton();
+      showToast("Sign Out SuccessFully", "rgb( 25, 135, 84)");
+      window.location.href = "Login/login.html";
+    })
+    .catch((error) => {
+      resetLogOutButton();
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      showToast(errorMessage, "#B00020");
     });
-  });
-}
+});
 
-if (closeAlertBtn) {
-  closeAlertBtn.addEventListener("click", () => {
-    alertMain.style.display = "none";
-  });
-}
+userProfileLink.addEventListener("click", toDoFunctionility);
+
+closeAlertBtn.addEventListener("click", () => {
+  alertMain.style.display = "none";
+});
+
 // let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
 // setInterval(() => {
 //   let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;

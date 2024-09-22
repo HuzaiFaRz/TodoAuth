@@ -10,10 +10,8 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "../firebase.js";
-
 const signUpForm = document.querySelector(".signup-form");
 const signUpSubmitBtn = document.querySelector("#SignUpBtn");
-// const usersCollection = collection(db, "Users");
 const resetSignUpButton = () => {
   signUpSubmitBtn.innerHTML = `Sign Up`;
   signUpSubmitBtn.style.opacity = "1";
@@ -102,5 +100,25 @@ const signUpFunctionility = async () => {
       resetSignUpButton();
     });
 };
+
+const passwordsIconsFunctionility = () => {
+  const passwordIcons = document.querySelectorAll(".password-icon");
+  const passwordInputs = document.querySelectorAll("#password-input");
+
+  Array.from(passwordIcons).forEach((passwordIconElem, passwordIconIndex) => {
+    passwordIconElem.addEventListener("click", () => {
+      passwordIconElem.classList.toggle("password-icon-active");
+      if (passwordIconElem.classList.contains("password-icon-active")) {
+        passwordIconElem.classList.replace("bi-eye-slash-fill", "bi-eye-fill");
+        passwordInputs[passwordIconIndex].setAttribute("type", "text");
+      } else {
+        passwordIconElem.classList.replace("bi-eye-fill", "bi-eye-slash-fill");
+        passwordInputs[passwordIconIndex].setAttribute("type", "password");
+      }
+    });
+  });
+};
+
+passwordsIconsFunctionility();
 
 signUpForm.addEventListener("submit", signUpFunctionility);
