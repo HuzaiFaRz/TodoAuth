@@ -77,7 +77,7 @@ const toDoFunctionility = () => {
         todoCreatedUserEmail: auth.currentUser.email,
         todoCreatedUserUID: uid,
         todoCreatedTime: new Date(),
-        todoCompleted: false,
+        todoCompleted: "No",
       };
 
       const todosCollection = collection(db, "Todos");
@@ -137,52 +137,58 @@ const getTodoFromDB = async (uid) => {
     querySnapshot.forEach((data) => {
       const docData = data.data();
 
-      const { todoText } = docData;
-      const todoDataShowing = `     <li
-              class="task w-100 gap-1 py-2 px-3 border-bottom border-2 border-black"
-            >
-              <span
-                id="${todoText}"
-                class="task-text w-100 fs-6 fw-medium text-dark"
-              >
-                ${todoText}</span
-              >
+      const { todoText, todoCompleted } = docData;
 
-              <div
-                class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2 gap-3 mt-3"
-              >
-                <button
-                  id="${data.id}"
-                  class="task-edit-btn btn btn-outline-success fw-medium fs-6 rounded-4 px-4 py-2 border-1"
-                  title="Edit Task"
-                >
-                  Edit
-                </button>
-                <button
-                  id="${data.id}"
-                  class="task-delete-btn btn btn-outline-danger fw-medium fs-6 rounded-4 px-4 py-2 border-1"
-                  title="Delete Task"
-                >
-                  Delete
-                </button>
-               
+      const todoDataShowing = `     
+      <li class="task w-100 gap-1 py-2 px-3 border-bottom border-2 border-black">
+        <span id="${todoText}" class="task-text w-100 fs-6 fw-medium text-dark">
+          ${todoText}
+        </span>
+        <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2 gap-3 mt-3">
+          <button id="${
+            data.id
+          }" class="task-edit-btn btn btn-outline-success fw-medium fs-6 rounded-4 px-4 py-2 border-1" title="Edit Task">
+            Edit
+          </button>
+          <button id="${
+            data.id
+          }" class="task-delete-btn btn btn-outline-danger fw-medium fs-6 rounded-4 px-4 py-2 border-1" title="Delete Task">
+            Delete
+          </button>
 
-                  <input type="checkbox"  class="taskMarkedCheckbox"  id="${data.id}" />
-              
-                
-              </div>
-            </li>`;
+          <div>   
+               <input type="checkbox" class="taskMarkedCheckbox" id="${
+                 data.id
+               }" ${todoCompleted === "Yes" ? "checked" : ""} />
+             <span class="${
+               todoCompleted === "Yes"
+                 ? "bi bi-check-circle-fill"
+                 : "bi bi-exclamation-circle-fill"
+             } taskMarkedCheckboxText btn ${
+        todoCompleted === "Yes" ? "btn-success" : "btn-danger"
+      }  fs-6"> ${todoCompleted === "Yes" ? " Completed" : " InCompleted"}
+              </span>
+
+            </div>
+
+  
+        </div>
+      </li>`;
 
       todoItems.innerHTML += todoDataShowing;
 
       const taskText = document.querySelectorAll(".task-text");
-
       const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
       const taskEditBtn = document.querySelectorAll(".task-edit-btn");
       const taskMarkedCheckbox = document.querySelectorAll(
         ".taskMarkedCheckbox"
       );
-
+      const taskMarkedCheckboxText = document.querySelectorAll(
+        ".taskMarkedCheckboxText"
+      );
+      // const taskMarkedCheckboxIcon = document.querySelectorAll(
+      //   "#taskMarkedCheckboxIcon"
+      // );
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {
         taskDeleteBtnElem.addEventListener("click", function () {
           taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-danger" role="status"></i><span/>`;
@@ -219,20 +225,38 @@ const getTodoFromDB = async (uid) => {
         });
       });
 
-      Array.from(taskMarkedCheckbox).forEach((taskMarkedCheckboxElem) => {
-        // if (data.data().todoCompleted === true) {
-        //   taskMarkedCheckboxElem.checked = true;
-        // } else {
-        //   taskMarkedCheckboxElem.checked = false;
-        // }
-        taskMarkedCheckboxElem.addEventListener("click", function () {
-          if (taskMarkedCheckboxElem.checked === true) {
-            markedTodoCompleted(this.id);
-          } else {
-            markedTodoUnCompleted(this.id);
-          }
-        });
-      });
+      Array.from(taskMarkedCheckbox).forEach(
+        (taskMarkedCheckboxElem, taskMarkedCheckboxIndex) => {
+          taskMarkedCheckboxElem.addEventListener("click", function () {
+            if (taskMarkedCheckboxElem.checked === true) {
+              markedTodoCompleted(this.id);
+              taskMarkedCheckboxText[taskMarkedCheckboxIndex].textContent =
+                " Completed";
+              taskMarkedCheckboxText[taskMarkedCheckboxIndex].classList.replace(
+                "btn-danger",
+                "btn-success"
+              );
+
+              taskMarkedCheckboxText[taskMarkedCheckboxIndex].classList.replace(
+                "bi-exclamation-circle-fill",
+                "bi-check-circle-fill"
+              );
+            } else {
+              markedTodoUnCompleted(this.id);
+              taskMarkedCheckboxText[taskMarkedCheckboxIndex].textContent =
+                " InCompleted ";
+              taskMarkedCheckboxText[taskMarkedCheckboxIndex].classList.replace(
+                "btn-success",
+                "btn-danger"
+              );
+              taskMarkedCheckboxText[taskMarkedCheckboxIndex].classList.replace(
+                "bi-check-circle-fill",
+                "bi-exclamation-circle-fill"
+              );
+            }
+          });
+        }
+      );
 
       resetTodoAddButton();
     });
@@ -279,7 +303,7 @@ const markedTodoCompleted = async (completedTodoID) => {
   try {
     const docRef = doc(db, "Todos", completedTodoID);
     await updateDoc(docRef, {
-      todoCompleted: true,
+      todoCompleted: "Yes",
     });
     showToast("Task Marked As Completed", "rgb(25, 135, 84)");
   } catch (error) {
@@ -291,7 +315,7 @@ const markedTodoUnCompleted = async (unCompleteTodoID) => {
   try {
     const docRef = doc(db, "Todos", unCompleteTodoID);
     await updateDoc(docRef, {
-      todoCompleted: false,
+      todoCompleted: "No",
     });
     showToast("Task Marked As InCompleted", "#B00020");
   } catch (error) {
