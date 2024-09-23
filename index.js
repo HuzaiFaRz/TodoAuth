@@ -63,10 +63,9 @@ const resetUpdateTaskButton = () => {
 const toDoFunctionility = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      userProfileLink.setAttribute("href", "./DashBoard/dashboard.html");
-      console.log(userProfileLink);
-      getTodoFromDB(auth.currentUser.uid);
       const uid = user.uid;
+      userProfileLink.setAttribute("href", "./DashBoard/dashboard.html");
+      getTodoFromDB(uid);
 
       if (!addTaskTextInput.value) {
         showToast("Write Task In Input", "#B00020");
@@ -76,7 +75,7 @@ const toDoFunctionility = () => {
       const todoDescription = {
         todoText: addTaskTextInput.value,
         todoCreatedUserEmail: auth.currentUser.email,
-        todoCreatedUserUID: auth.currentUser.uid,
+        todoCreatedUserUID: uid,
         todoCreatedTime: new Date(),
         todoCompleted: false,
       };
@@ -121,8 +120,7 @@ const getTodoFromDB = async (uid) => {
   try {
     const queryTodo = query(
       collection(db, "Todos"),
-      where("todoCreatedUserUID", "==", uid),
-      orderBy("time", "uisadsadd")
+      where("todoCreatedUserUID", "==", uid)
     );
 
     const querySnapshot = await getDocs(queryTodo);
@@ -168,8 +166,10 @@ const getTodoFromDB = async (uid) => {
               </div>
             </li>`;
 
+
       todoItems.innerHTML += todoDataShowing;
 
+ 
       const taskText = document.querySelectorAll(".task-text");
 
       const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
@@ -240,6 +240,10 @@ const getTodoFromDB = async (uid) => {
   }
 };
 
+
+
+
+
 const deleteTodo = async (deletedTodoID) => {
   try {
     const docRef = doc(db, "Todos", deletedTodoID);
@@ -298,9 +302,10 @@ const markedTodoUnCompleted = async (unCompleteTodoID) => {
 window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      getTodoFromDB(auth.currentUser.uid);
+      const uid = user.uid;
+      getTodoFromDB(uid);
       alertMain.style.display = "none";
-      getUserInfoFromDB(user.uid);
+      getUserInfoFromDB(uid);
       logOutBtn.style.display = "block";
     } else {
       userNameDiv.textContent = `Hi! User`;
