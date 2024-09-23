@@ -164,7 +164,7 @@ const getTodoFromDB = async (uid) => {
                todoCompleted === "Yes"
                  ? "bi bi-check-circle-fill"
                  : "bi bi-exclamation-circle-fill"
-             } taskMarkedCheckboxText btn ${
+             } taskMarkedCheckboxBtn btn ${
         todoCompleted === "Yes" ? "btn-success" : "btn-danger"
       }  fs-6"> ${todoCompleted === "Yes" ? " Completed" : " InCompleted"}
               </span>
@@ -183,8 +183,8 @@ const getTodoFromDB = async (uid) => {
       const taskMarkedCheckbox = document.querySelectorAll(
         ".taskMarkedCheckbox"
       );
-      const taskMarkedCheckboxText = document.querySelectorAll(
-        ".taskMarkedCheckboxText"
+      const taskMarkedCheckboxBtn = document.querySelectorAll(
+        ".taskMarkedCheckboxBtn"
       );
       // const taskMarkedCheckboxIcon = document.querySelectorAll(
       //   "#taskMarkedCheckboxIcon"
@@ -199,7 +199,7 @@ const getTodoFromDB = async (uid) => {
         });
       });
 
-      Array.from(taskEditBtn).forEach((taskEditBtnElem) => {
+      Array.from(taskEditBtn).forEach((taskEditBtnElem,index) => {
         taskEditBtnElem.addEventListener("click", function () {
           const currenttaskID = this.id;
           const currentTaskText = taskText[index].id;
@@ -230,26 +230,26 @@ const getTodoFromDB = async (uid) => {
           taskMarkedCheckboxElem.addEventListener("click", function () {
             if (taskMarkedCheckboxElem.checked === true) {
               markedTodoCompleted(this.id);
-              taskMarkedCheckboxText[taskMarkedCheckboxIndex].textContent =
+              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].textContent =
                 " Completed";
-              taskMarkedCheckboxText[taskMarkedCheckboxIndex].classList.replace(
+              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].classList.replace(
                 "btn-danger",
                 "btn-success"
               );
 
-              taskMarkedCheckboxText[taskMarkedCheckboxIndex].classList.replace(
+              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].classList.replace(
                 "bi-exclamation-circle-fill",
                 "bi-check-circle-fill"
               );
             } else {
               markedTodoUnCompleted(this.id);
-              taskMarkedCheckboxText[taskMarkedCheckboxIndex].textContent =
+              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].textContent =
                 " InCompleted ";
-              taskMarkedCheckboxText[taskMarkedCheckboxIndex].classList.replace(
+              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].classList.replace(
                 "btn-success",
                 "btn-danger"
               );
-              taskMarkedCheckboxText[taskMarkedCheckboxIndex].classList.replace(
+              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].classList.replace(
                 "bi-check-circle-fill",
                 "bi-exclamation-circle-fill"
               );

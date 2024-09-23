@@ -285,7 +285,7 @@ input {
   .todo-body {
     max-height: 390px;
   }
-
+.taskMarkedCheckboxBtn,
   #AddTaskBtn,
   .task-edit-btn,
   .task-delete-btn {
