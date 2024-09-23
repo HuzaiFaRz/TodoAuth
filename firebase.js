@@ -26,7 +26,6 @@ import {
   ref,
   uploadBytes,
   getDownloadURL,
-
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 const firebaseConfig = {
   apiKey: "AIzaSyDMskxzV8Md7OLmdzyknzxMjw-W-BLkR1Y",
@@ -82,5 +81,4 @@ export {
   deleteDoc,
   updateDoc,
   orderBy,
-
 };

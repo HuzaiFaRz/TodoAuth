@@ -199,7 +199,7 @@ const getTodoFromDB = async (uid) => {
         });
       });
 
-      Array.from(taskEditBtn).forEach((taskEditBtnElem,index) => {
+      Array.from(taskEditBtn).forEach((taskEditBtnElem, index) => {
         taskEditBtnElem.addEventListener("click", function () {
           const currenttaskID = this.id;
           const currentTaskText = taskText[index].id;
