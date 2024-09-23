@@ -48,7 +48,7 @@ body {
 }
 .dashboard {
   width: 500px;
-  height: 500px;
+  height: 600px;
   background-color: var(--text-Color);
 }
 
