@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  GoogleAuthProvider,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 import {
   getFirestore,
@@ -39,6 +40,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const storage = getStorage(app);
 
@@ -63,6 +65,7 @@ export {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  provider,
   db,
   storage,
   doc,
@@ -79,4 +82,5 @@ export {
   deleteDoc,
   updateDoc,
   orderBy,
+
 };

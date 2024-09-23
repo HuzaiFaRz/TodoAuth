@@ -120,7 +120,8 @@ const getTodoFromDB = async (uid) => {
   try {
     const queryTodo = query(
       collection(db, "Todos"),
-      where("todoCreatedUserUID", "==", uid)
+      where("todoCreatedUserUID", "==", uid),
+      orderBy("todoCreatedTime", "desc")
     );
 
     const querySnapshot = await getDocs(queryTodo);
@@ -166,10 +167,8 @@ const getTodoFromDB = async (uid) => {
               </div>
             </li>`;
 
-
       todoItems.innerHTML += todoDataShowing;
 
- 
       const taskText = document.querySelectorAll(".task-text");
 
       const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
@@ -239,10 +238,6 @@ const getTodoFromDB = async (uid) => {
     console.log(error);
   }
 };
-
-
-
-
 
 const deleteTodo = async (deletedTodoID) => {
   try {
