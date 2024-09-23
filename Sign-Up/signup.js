@@ -12,12 +12,14 @@ import {
 } from "../firebase.js";
 const signUpForm = document.querySelector(".signup-form");
 const signUpSubmitBtn = document.querySelector("#SignUpBtn");
+const alertMain = document.querySelector(".alert-main");
 const resetSignUpButton = () => {
   signUpSubmitBtn.innerHTML = `Sign Up`;
   signUpSubmitBtn.style.opacity = "1";
   signUpSubmitBtn.style.cursor = "pointer";
   signUpSubmitBtn.disabled = false;
 };
+
 const signUpFunctionility = async () => {
   event.preventDefault();
   const signUpFormData = new FormData(signUpForm);
@@ -60,6 +62,8 @@ const signUpFunctionility = async () => {
   signUpSubmitBtn.style.opacity = "0.5";
   signUpSubmitBtn.style.cursor = "not-allowed";
   signUpSubmitBtn.disabled = true;
+  alertMain.style.display = "flex";
+  alertMain.innerHTML = `<div class="spinner-grow text-light" role="status" style="width: 3rem; height: 3rem; z-index:9999;" ></div>`;
 
   createUserWithEmailAndPassword(
     auth,
@@ -71,31 +75,40 @@ const signUpFunctionility = async () => {
       const userRef = ref(storage, `Users/${userCredential.user.uid}`);
       uploadBytes(userRef, signUpUserInformaTion.signUpProfile)
         .then((a) => {
-          console.log(a);
           getDownloadURL(userRef)
             .then((URL) => {
               signUpUserInformaTion.signUpProfile = URL;
               const userDocRef = doc(db, "Users", userCredential.user.uid);
               setDoc(userDocRef, signUpUserInformaTion)
                 .then((b) => {
+                  alertMain.style.display = "none";
+                  alertMain.innerHTML = "";
                   showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
                   signUpForm.reset();
                   resetSignUpButton();
                   window.location.href = "../Login/login.html";
                 })
                 .catch((error) => {
+                  alertMain.style.display = "none";
+                  alertMain.innerHTML = "";
                   showToast(error, "#B00020");
                 });
             })
             .catch((error) => {
+              alertMain.style.display = "none";
+              alertMain.innerHTML = "";
               showToast(error, "#B00020");
             });
         })
         .catch((error) => {
+          alertMain.style.display = "none";
+          alertMain.innerHTML = "";
           showToast(error, "#B00020");
         });
     })
     .catch((error) => {
+      alertMain.style.display = "none";
+      alertMain.innerHTML = "";
       showToast(error.message, "#B00020");
       resetSignUpButton();
     });

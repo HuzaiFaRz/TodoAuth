@@ -106,12 +106,18 @@ const toDoFunctionility = () => {
 
 const getUserInfoFromDB = (uid) => {
   const userDocRef = doc(db, "Users", uid);
+  alertMain.style.display = "flex";
+  alertMain.innerHTML = `<div class="spinner-grow text-light" role="status" ></div>`;
   getDoc(userDocRef)
     .then((data) => {
+      alertMain.style.display = "none";
+      alertMain.innerHTML = "";
       userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
       userProfileDiv.setAttribute("src", `${data.data().signUpProfile}}`);
     })
     .catch((error) => {
+      alertMain.style.display = "none";
+      alertMain.innerHTML = "";
       showToast(error, "#B00020");
     });
 };
@@ -318,13 +324,20 @@ logOutBtn.addEventListener("click", () => {
   logOutBtn.style.opacity = "0.5";
   logOutBtn.style.cursor = "not-allowed";
   logOutBtn.disabled = true;
+  alertMain.style.display = "flex";
+  alertMain.innerHTML = `<div class="spinner-grow text-light" role="status" ></div>`;
+
   signOut(auth)
     .then(() => {
+      alertMain.style.display = "none";
+      alertMain.innerHTML = "";
       resetLogOutButton();
       showToast("Sign Out SuccessFully", "rgb( 25, 135, 84)");
       window.location.href = "Login/login.html";
     })
     .catch((error) => {
+      alertMain.style.display = "none";
+      alertMain.innerHTML = "";
       resetLogOutButton();
       const errorCode = error.code;
       const errorMessage = error.message;

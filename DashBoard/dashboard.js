@@ -21,6 +21,7 @@ const userProfileDiv = document.querySelector("#User-Profile");
 const logOutBtn = document.querySelector(".logout-btn");
 const dashboardForm = document.querySelector(".dashboard-form");
 const welcoming = document.querySelector(".welcoming");
+const alertMain = document.querySelector(".alert-main");
 window.addEventListener("load", () => {
   const {
     dashBoardName,
@@ -33,10 +34,14 @@ window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       logOutBtn.style.display = "block";
-      console.log(this);
       const userDocRef = doc(db, "Users", user.uid);
+      alertMain.style.display = "flex";
+      alertMain.innerHTML = `<div class="spinner-grow text-light" role="status" ></div>`;
+
       getDoc(userDocRef)
         .then((data) => {
+          alertMain.style.display = "none";
+          alertMain.innerHTML = "";
           const {
             signUpProfile,
             signUpName,
@@ -66,6 +71,8 @@ window.addEventListener("load", () => {
           userProfileDiv.setAttribute("src", `${signUpProfile}}`);
         })
         .catch((error) => {
+          alertMain.style.display = "none";
+          alertMain.innerHTML = "";
           showToast(error, "#B00020");
           console.log(error);
         });
@@ -74,10 +81,6 @@ window.addEventListener("load", () => {
     }
   });
 });
-
-// console.log(auth.currentUser);
-
-// getUserInfoFromDB(auth.currentUser.uid);
 
 const resetLogOutButton = () => {
   logOutBtn.disabled = false;
@@ -90,13 +93,20 @@ logOutBtn.addEventListener("click", () => {
   logOutBtn.style.opacity = "0.5";
   logOutBtn.style.cursor = "not-allowed";
   logOutBtn.disabled = true;
+  alertMain.style.display = "flex";
+  alertMain.innerHTML = `<div class="spinner-grow text-light" role="status" ></div>`;
+
   signOut(auth)
     .then(() => {
+      alertMain.style.display = "none";
+      alertMain.innerHTML = "";
       resetLogOutButton();
       showToast("Sign Out SuccessFully", "rgb( 25, 135, 84)");
       window.location.href = "../Login/login.html";
     })
     .catch((error) => {
+      alertMain.style.display = "none";
+      alertMain.innerHTML = "";
       resetLogOutButton();
       const errorCode = error.code;
       const errorMessage = error.message;
