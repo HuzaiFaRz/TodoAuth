@@ -24,14 +24,14 @@
   </head>
   <body>
     <main
-      class="bg-primary main w-100 h-100 d-flex flex-column justify-content-center align-items-center"
+      class="bg-primary main w-100 px-2 py-2 d-flex flex-column justify-content-center align-items-center"
     >
-
       <button
         class="logout-btn btn bg-danger text-light fw-medium border-2 position-absolute overflow-hidden start-50 top-0 mt-4 translate-middle-x"
       >
         Log Out
       </button>
+
       <nav
         class="navbar navbar-expand-lg navbar-light bg-light position-absolute top-0 end-0 w-100"
       >
@@ -44,9 +44,8 @@
           </a>
         </div>
       </nav>
-
       <div
-        class="alert-main w-100 h-100 position-fixed flex-column justify-content-center align-items-center"
+        class="alert-main w-100 position-absolute flex-column justify-content-center align-items-center"
       >
         <div
           class="toast user-exist-check d-block"
@@ -86,7 +85,7 @@
       </div>
 
       <div
-        class="user-details mt-5 d-flex flex-column justify-content-start align-items-center gap-4 w-100"
+        class="user-details d-flex flex-row justify-content-center align-items-center w-100"
       >
         <h2 class="display-6 fw-medium text-light" id="User-Name">Hi! User</h2>
       </div>
@@ -113,7 +112,7 @@
             >
             <button
               type="button"
-              class="btn btn-outline-primary fw-medium fs-3 rounded-4 px-4 py-1 border-2"
+              class="btn btn-outline-primary fw-medium fs-5 rounded-4 px-4 py-1 border-2"
               id="AddTaskBtn"
               data-bs-toggle="tooltip"
               data-bs-title="Add Task"
@@ -137,7 +136,6 @@
           ></ol>
         </div>
       </div>
-      
     </main>
 
     <script

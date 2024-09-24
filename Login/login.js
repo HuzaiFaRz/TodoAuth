@@ -55,7 +55,6 @@ const logInFunctionility = () => {
       const errorMessage = error.message;
       showToast(errorMessage, "#B00020");
       resetLoginButton();
-      logInForm.reset();
     });
 };
 

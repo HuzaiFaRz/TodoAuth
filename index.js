@@ -261,7 +261,7 @@ const getTodoFromDB = async (uid) => {
       resetTodoAddButton();
     });
     if (querySnapshot.empty) {
-      todoItems.innerHTML = `<h5 class="text-center w-100 fs-5">No Task Has Been Added</h5>`;
+      todoItems.innerHTML = `<h5 class="text-center w-100 fs-6">No Task Has Been Added</h5>`;
     }
   } catch (error) {
     showToast(error, "#B00020");
