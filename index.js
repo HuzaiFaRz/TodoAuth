@@ -144,7 +144,7 @@ const getTodoFromDB = async (uid) => {
         <span id="${todoText}" class="task-text w-100 fs-6 fw-medium text-dark">
           ${todoText}
         </span>
-        <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2 gap-3 mt-3">
+        <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2 gap-4 mt-3">
           <button id="${
             data.id
           }" class="task-edit-btn btn btn-outline-success fw-medium fs-6 rounded-4 px-4 py-2 border-1" title="Edit Task">
