@@ -13,6 +13,7 @@ body {
   height: 100%;
   user-select: none;
   cursor: pointer;
+  overflow: hidden;
 }
 
 @font-face {
@@ -39,10 +40,6 @@ body {
 :root {
   --bg-Color: #4070f4;
   --text-Color: #ffffff;
-}
-
-body {
-  min-height: 100vh;
 }
 
 .main,
