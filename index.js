@@ -31,13 +31,6 @@ const updateTaskBtn = document.querySelector("#UpdateTaskBtn");
 
 updateTaskBtn.style.display = "none";
 
-const tooltipTriggerList = document.querySelectorAll(
-  '[data-bs-toggle="tooltip"]'
-);
-const tooltipList = [...tooltipTriggerList].map(
-  (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
-);
-
 const resetLogOutButton = () => {
   logOutBtn.disabled = false;
   logOutBtn.innerHTML = `Log Out`;
@@ -68,7 +61,7 @@ const toDoFunctionility = () => {
       getTodoFromDB(uid);
 
       if (!addTaskTextInput.value) {
-        showToast("Write Task In Input", "#B00020");
+        showToast("Write Task In Input", "#B00020", 2000);
         return;
       }
 
@@ -88,7 +81,7 @@ const toDoFunctionility = () => {
 
       addDoc(todosCollection, todoDescription)
         .then((snapShot) => {
-          showToast("Task Added", "rgb( 25, 135, 84)");
+          showToast("Task Added", "#198754", 2000);
           resetTodoAddButton();
 
           addTaskTextInput.value = "";
@@ -112,13 +105,14 @@ const getUserInfoFromDB = (uid) => {
     .then((data) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
+      // userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
+      showToast(`Hi! ${data.data().signUpName}`, "black", 5000);
       userProfileDiv.setAttribute("src", `${data.data().signUpProfile}}`);
     })
     .catch((error) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      showToast(error, "#B00020");
+      showToast(error, "#B00020", 2000);
     });
 };
 
@@ -264,7 +258,7 @@ const getTodoFromDB = async (uid) => {
       todoItems.innerHTML = `<h5 class="text-center w-100 fs-6">No Task Has Been Added</h5>`;
     }
   } catch (error) {
-    showToast(error, "#B00020");
+    showToast(error, "#B00020", 2000);
     console.log(error);
   }
 };
@@ -274,10 +268,10 @@ const deleteTodo = async (deletedTodoID) => {
     const docRef = doc(db, "Todos", deletedTodoID);
     await deleteDoc(docRef);
     getTodoFromDB(auth.currentUser.uid);
-    showToast("Task Deleted SuccessFully", "#B00020");
+    showToast("Task Deleted SuccessFully", "#B00020", 2000);
     addTaskTextInput.value = "";
   } catch (error) {
-    showToast(error, "#B00020");
+    showToast(error, "#B00020", 2000);
   }
 };
 
@@ -291,10 +285,10 @@ const updateTodo = async (editTodoID, editTodoText) => {
     addTaskBtn.style.display = "block";
     resetUpdateTaskButton();
     getTodoFromDB(auth.currentUser.uid);
-    showToast("Task Updated Successfully", "rgb(25, 135, 84)");
+    showToast("Task Updated Successfully", "#198754", 2000);
     addTaskTextInput.value = "";
   } catch (error) {
-    showToast(error, "#B00020");
+    showToast(error, "#B00020", 2000);
     console.log(error);
   }
 };
@@ -305,9 +299,9 @@ const markedTodoCompleted = async (completedTodoID) => {
     await updateDoc(docRef, {
       todoCompleted: "Yes",
     });
-    showToast("Task Marked As Completed", "rgb(25, 135, 84)");
+    showToast("Task Marked As Completed", "#198754", 2000);
   } catch (error) {
-    showToast(error, "#B00020");
+    showToast(error, "#B00020", 2000);
     console.log(error);
   }
 };
@@ -317,9 +311,9 @@ const markedTodoUnCompleted = async (unCompleteTodoID) => {
     await updateDoc(docRef, {
       todoCompleted: "No",
     });
-    showToast("Task Marked As InCompleted", "#B00020");
+    showToast("Task Marked As InCompleted", "#B00020", 2000);
   } catch (error) {
-    showToast(error, "#B00020");
+    showToast(error, "#B00020", 2000);
     console.log(error);
   }
 };
@@ -356,7 +350,7 @@ logOutBtn.addEventListener("click", () => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
       resetLogOutButton();
-      showToast("Sign Out SuccessFully", "rgb( 25, 135, 84)");
+      showToast("Sign Out SuccessFully", "#198754", 2000);
       window.location.href = "Login/login.html";
     })
     .catch((error) => {
@@ -365,7 +359,7 @@ logOutBtn.addEventListener("click", () => {
       resetLogOutButton();
       const errorCode = error.code;
       const errorMessage = error.message;
-      showToast(errorMessage, "#B00020");
+      showToast(errorMessage, "#B00020", 2000);
     });
 });
 

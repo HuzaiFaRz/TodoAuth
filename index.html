@@ -23,74 +23,67 @@
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
-    <main
-      class="bg-primary main w-100 h-100 px-2 py-2 d-flex flex-column justify-content-center align-items-center"
+    <button
+      class="logout-btn btn bg-danger text-light fw-medium border-2 position-absolute start-50 top-0 mt-4 translate-middle-x"
     >
-      <button
-        class="logout-btn btn bg-danger text-light fw-medium border-2 position-absolute overflow-hidden start-50 top-0 mt-4 translate-middle-x"
-      >
-        Log Out
-      </button>
+      Log Out
+    </button>
 
-      <nav
-        class="navbar navbar-expand-lg navbar-light bg-light position-absolute top-0 end-0 w-100"
-      >
-        <div class="container-fluid position-relative">
-          <a class="navbar-brand" href="index.html">
-            <img src="Images/favicon.png" class="logo" />
-          </a>
-          <a class="User-Profile-Link">
-            <img src="Images/Profile-Default.jpg" id="User-Profile" />
-          </a>
-        </div>
-      </nav>
+    <nav class="navbar navbar-light bg-light w-100">
+      <div class="container-fluid position-relative">
+        <a class="navbar-brand" href="index.html">
+          <img src="Images/favicon.png" class="logo" />
+        </a>
+        <a class="User-Profile-Link">
+          <img src="Images/Profile-Default.jpg" id="User-Profile" />
+        </a>
+      </div>
+    </nav>
+
+    <div
+      class="alert-main w-100 h-100 position-fixed top-0 bottom-0 start-0 flex-column justify-content-center align-items-center"
+    >
       <div
-        class="alert-main w-100 position-absolute flex-column justify-content-center align-items-center"
+        class="toast user-exist-check d-block"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
       >
         <div
-          class="toast user-exist-check d-block"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
+          class="toast-header h-25 d-flex flex-row justify-content-between align-items-center w-100"
         >
-          <div
-            class="toast-header h-25 d-flex flex-row justify-content-between align-items-center w-100"
-          >
-            <div>
-              <img src="Images/favicon.png" class="logo" alt="..." />
-              <strong class="me-auto px-3 fs-3">Hello!</strong>
-            </div>
-            <button
-              class="bi bi-x fw-bolder border-0 rounded-3 display-5"
-              id="closeAlertBtn"
-            ></button>
+          <div>
+            <img src="Images/favicon.png" class="logo" alt="..." />
+            <strong class="me-auto px-3 fs-3">Hello!</strong>
           </div>
-          <div
-            class="toast-body d-flex flex-wrap justify-content-evenly align-items-center py-3 h-75"
+          <button
+            class="bi bi-x fw-bolder border-0 rounded-3 display-5"
+            id="closeAlertBtn"
+          ></button>
+        </div>
+        <div
+          class="toast-body d-flex flex-wrap justify-content-evenly align-items-center py-3 h-75"
+        >
+          <a
+            href="Sign-Up/signup.html"
+            class="btn btn-outline-success fw-medium border-2"
           >
-            <a
-              href="Sign-Up/signup.html"
-              class="btn btn-outline-success fw-medium border-2"
-            >
-              Sign Up
-            </a>
-            <a
-              href="Login/login.html"
-              class="btn btn-outline-success fw-medium border-2"
-            >
-              Log In
-            </a>
-          </div>
+            Sign Up
+          </a>
+          <a
+            href="Login/login.html"
+            class="btn btn-outline-success fw-medium border-2"
+          >
+            Log In
+          </a>
         </div>
       </div>
+    </div>
 
-      <div
-        class="user-details d-flex flex-row justify-content-center align-items-center w-100"
-      >
-        <h2 class="display-6 fw-medium text-light" id="User-Name">Hi! User</h2>
-      </div>
-
-      <div class="todo-app rounded-2 mt-3">
+    <main
+      class="bg-primary main px-2 py-2 w-100 h-100 d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="todo-app rounded-2 bg-light">
         <div class="todo-header bg-light w-100 px-2 py-2">
           <h1
             class="text-bg-dark px-3 py-3 rounded-2 d-flex flex-row justify-content-between align-items-center"
@@ -114,26 +107,22 @@
               type="button"
               class="btn btn-outline-primary fw-medium fs-5 rounded-4 px-4 py-1 border-2"
               id="AddTaskBtn"
-              data-bs-toggle="tooltip"
-              data-bs-title="Add Task"
             >
               Add
             </button>
             <button
               type="button"
-              class="btn btn-outline-primary fw-medium fs-3 rounded-4 px-4 py-1 border-2"
+              class="btn btn-outline-primary fw-medium fs-6 rounded-4 px-4 py-1 border-2"
               id="UpdateTaskBtn"
-              data-bs-toggle="tooltip"
-              data-bs-title="Update Task"
             >
               Update
             </button>
           </div>
         </div>
-        <div class="todo-body bg-light">
-          <ol
-            class="todo-items w-100 d-flex flex-column justify-content-center align-items-center text-start gap-4 py-3 px-0 fw-semibold"
-          ></ol>
+        <div class="todo-body bg-light w-100">
+          <ul
+            class="list-unstyled todo-items w-100 d-flex flex-column justify-content-center align-items-center text-start gap-4 py-3 px-0 fw-semibold"
+          ></ul>
         </div>
       </div>
     </main>

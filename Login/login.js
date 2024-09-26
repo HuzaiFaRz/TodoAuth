@@ -23,7 +23,7 @@ const logInFunctionility = () => {
   logInSubmitBtn.style.cursor = "not-allowed";
   logInSubmitBtn.disabled = true;
   if (!logInUserInformaTion.logInEmail || !logInUserInformaTion.logInPassword) {
-    showToast("Fill All Field", "rgb(220, 53, 69)");
+    showToast("Fill All Field", "#B00020", 2000);
     resetLoginButton();
     return;
   }
@@ -43,7 +43,7 @@ const logInFunctionility = () => {
       const user = userCredential.user;
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      showToast("Log In SuccessFully", "rgb(0, 128, 0,0.5)");
+      showToast("Log In SuccessFully", "#198754", 2000);
       resetLoginButton();
       logInForm.reset();
       window.location.href = "../index.html";
@@ -53,7 +53,7 @@ const logInFunctionility = () => {
       alertMain.innerHTML = "";
       const errorCode = error.code;
       const errorMessage = error.message;
-      showToast(errorMessage, "#B00020");
+      showToast(errorMessage, "#B00020", 2000);
       resetLoginButton();
     });
 };

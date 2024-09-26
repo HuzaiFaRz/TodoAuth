@@ -43,11 +43,11 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-const showToast = (massege, background) => {
+const showToast = (massege, background, duration) => {
   Toastify({
     text: `${massege}`,
     position: "center",
-    duration: 2000,
+    duration: `${duration}`,
     style: {
       background: `${background}`,
       color: "#fbfcf8",

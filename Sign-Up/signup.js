@@ -39,14 +39,14 @@ const signUpFunctionility = async () => {
     !signUpUserInformaTion.signUpPassword ||
     !signUpUserInformaTion.signUpConfirmPassword
   ) {
-    showToast("Fill All Field", "#B00020");
+    showToast("Fill All Field", "#B00020", 2000);
     resetSignUpButton();
     return;
   } else if (
     !signUpUserInformaTion.signUpProfile ||
     !signUpUserInformaTion.signUpProfile.name
   ) {
-    showToast("Upload Profile Photo", "#B00020");
+    showToast("Upload Profile Photo", "#B00020", 2000);
     resetSignUpButton();
     return;
   }
@@ -54,7 +54,7 @@ const signUpFunctionility = async () => {
     signUpUserInformaTion.signUpPassword !==
     signUpUserInformaTion.signUpConfirmPassword
   ) {
-    showToast("Password Does Not Match", "#B00020");
+    showToast("Password Does Not Match", "#B00020", 2000);
     resetSignUpButton();
     return;
   }
@@ -83,7 +83,7 @@ const signUpFunctionility = async () => {
                 .then((b) => {
                   alertMain.style.display = "none";
                   alertMain.innerHTML = "";
-                  showToast("SignUp SuccessFully", "rgb( 25, 135, 84)");
+                  showToast("SignUp SuccessFully", "#198754", 2000);
                   signUpForm.reset();
                   resetSignUpButton();
                   window.location.href = "../Login/login.html";
@@ -91,25 +91,25 @@ const signUpFunctionility = async () => {
                 .catch((error) => {
                   alertMain.style.display = "none";
                   alertMain.innerHTML = "";
-                  showToast(error, "#B00020");
+                  showToast(error, "#B00020", 2000);
                 });
             })
             .catch((error) => {
               alertMain.style.display = "none";
               alertMain.innerHTML = "";
-              showToast(error, "#B00020");
+              showToast(error, "#B00020", 2000);
             });
         })
         .catch((error) => {
           alertMain.style.display = "none";
           alertMain.innerHTML = "";
-          showToast(error, "#B00020");
+          showToast(error, "#B00020", 2000);
         });
     })
     .catch((error) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      showToast(error.message, "#B00020");
+      showToast(error.message, "#B00020", 2000);
       resetSignUpButton();
     });
 };
