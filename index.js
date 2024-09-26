@@ -374,9 +374,3 @@ userProfileLink.addEventListener("click", toDoFunctionility);
 closeAlertBtn.addEventListener("click", () => {
   alertMain.style.display = "none";
 });
-
-// let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
-// setInterval(() => {
-//   let randomlyNumber = `#${Math.round(Math.random() * 1000000)}`;
-//   document.body.style.backgroundColor = randomlyNumber;
-// }, 1001000);
