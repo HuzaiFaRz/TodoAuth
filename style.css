@@ -41,20 +41,21 @@ body {
   --text-Color: #ffffff;
 }
 
+body {
+  min-height: 100vh;
+}
+
+.main,
 .signup-main,
 .login-main,
 .dashboard-main {
+  height: 100% !important;
   background-color: var(--bg-Color);
 }
 .dashboard {
   width: 500px;
   height: 500px;
   background-color: var(--text-Color);
-}
-
-.main {
-  min-height: 100vh;
-  height: 100%;
 }
 
 .logo {
