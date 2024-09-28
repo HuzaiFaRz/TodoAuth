@@ -74,7 +74,7 @@ const toDoFunctionility = () => {
       };
 
       const todosCollection = collection(db, "Todos");
-      addTaskBtn.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Adding<i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
+      addTaskBtn.innerHTML = `Adding`;
       addTaskBtn.style.opacity = "0.5";
       addTaskBtn.style.cursor = "not-allowed";
       addTaskBtn.disabled = true;
@@ -137,7 +137,7 @@ const getTodoFromDB = async (uid) => {
         <span id="${todoText}" class="task-text w-100 fs-6 fw-medium text-dark">
           ${todoText}
         </span>
-        <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2 gap-2 mt-3 w-100">
+        <div class="todo-btns w-100 d-flex flex-wrap justify-content-evenly align-items-center py-2 px-2 gap-1 mt-3 w-100">
           <button id="${
             data.id
           }" class="task-edit-btn btn btn-outline-success fw-medium fs-6 rounded-4 px-4 py-2 border-1" title="Edit Task">
@@ -176,7 +176,7 @@ const getTodoFromDB = async (uid) => {
       const taskCompleteBtn = document.querySelectorAll(".task-complete-btn");
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {
         taskDeleteBtnElem.addEventListener("click", function () {
-          taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Deleting<i class="spinner-border spinner-border-sm text-danger" role="status"></i>`;
+          taskDeleteBtnElem.innerHTML = `Deleting`;
           taskDeleteBtnElem.style.opacity = "0.5";
           taskDeleteBtnElem.style.cursor = "not-allowed";
           taskDeleteBtnElem.disabled = true;
@@ -198,7 +198,7 @@ const getTodoFromDB = async (uid) => {
               updateTaskBtn.style.display = "block";
               updateTaskBtn.addEventListener("click", () => {
                 updateTodo(currenttaskID, addTaskTextInput.value);
-                updateTaskBtn.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Updating<i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
+                updateTaskBtn.innerHTML = `Updating`;
                 updateTaskBtn.style.opacity = "0.5";
                 updateTaskBtn.style.cursor = "not-allowed";
                 updateTaskBtn.disabled = true;
