@@ -176,7 +176,7 @@ input {
 }
 
 .todo-app {
-  width: 500px;
+  width: 550px;
   height: max-content;
   max-height: 700px;
   overflow-y: scroll;

@@ -74,7 +74,7 @@ const toDoFunctionility = () => {
       };
 
       const todosCollection = collection(db, "Todos");
-      addTaskBtn.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
+      addTaskBtn.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Adding<i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
       addTaskBtn.style.opacity = "0.5";
       addTaskBtn.style.cursor = "not-allowed";
       addTaskBtn.disabled = true;
@@ -184,7 +184,7 @@ const getTodoFromDB = async (uid) => {
       // );
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {
         taskDeleteBtnElem.addEventListener("click", function () {
-          taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-danger" role="status"></i><span/>`;
+          taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Deleting<i class="spinner-border spinner-border-sm text-danger" role="status"></i>`;
           taskDeleteBtnElem.style.opacity = "0.5";
           taskDeleteBtnElem.style.cursor = "not-allowed";
           taskDeleteBtnElem.disabled = true;
@@ -206,7 +206,7 @@ const getTodoFromDB = async (uid) => {
               updateTaskBtn.style.display = "block";
               updateTaskBtn.addEventListener("click", () => {
                 updateTodo(currenttaskID, addTaskTextInput.value);
-                updateTaskBtn.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Loading  <i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
+                updateTaskBtn.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Updating<i class="spinner-border spinner-border-sm text-primary" role="status"></i><span/>`;
                 updateTaskBtn.style.opacity = "0.5";
                 updateTaskBtn.style.cursor = "not-allowed";
                 updateTaskBtn.disabled = true;
