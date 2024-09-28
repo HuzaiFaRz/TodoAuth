@@ -133,7 +133,7 @@ const getTodoFromDB = async (uid) => {
       const { todoText, todoCompleted } = docData;
 
       const todoDataShowing = `     
-      <li class="task w-100 gap-1 py-2 px-2 border-bottom border-2 border-black">
+      <li class="task w-100 gap-1 py-2 px-3 border-bottom border-2 border-black">
         <span id="${todoText}" class="task-text w-100 fs-6 fw-medium text-dark">
           ${todoText}
         </span>
