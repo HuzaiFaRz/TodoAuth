@@ -193,12 +193,14 @@ const getTodoFromDB = async (uid) => {
             addTaskTextInput.value = currentTaskText;
             if (addTaskTextInput.value === currentTaskText) {
               taskEditBtnElem.innerHTML = "Editing";
+              taskDeleteBtn[index].disabled = true;
               taskEditBtnElem.disabled = true;
               addTaskBtn.style.display = "none";
               updateTaskBtn.style.display = "block";
               updateTaskBtn.addEventListener("click", () => {
                 updateTodo(currenttaskID, addTaskTextInput.value);
                 updateTaskBtn.innerHTML = `Updating`;
+                taskDeleteBtn[index].disabled = false;
                 updateTaskBtn.style.opacity = "0.5";
                 updateTaskBtn.style.cursor = "not-allowed";
                 updateTaskBtn.disabled = true;
