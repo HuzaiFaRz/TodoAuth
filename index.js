@@ -155,8 +155,8 @@ const getTodoFromDB = async (uid) => {
                 : "bi-exclamation-circle-fill"
             } btn ${
         todoCompleted === true ? "btn-success" : "btn btn-danger"
-      }" title=${todoCompleted === true ? "Completed" : "InComplete"}>
-          ${todoCompleted === true ? " Completed" : " InComplete"}
+      }" title=${todoCompleted === true ? "Complete" : "InComplete"}>
+          ${todoCompleted === true ? " Complete" : " InComplete"}
           </button>
           <input type="checkbox" class="task-complete-check-box position-absolute w-100 h-100 start-0 top-0 opacity-0" id="${
             data.id
@@ -219,7 +219,7 @@ const getTodoFromDB = async (uid) => {
               markedTodoCompleted(this.id);
               taskCompleteBtn[
                 taskMarkedCheckboxIndex
-              ].textContent = ` Completed`;
+              ].textContent = ` Complete`;
               taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
                 "bi-exclamation-circle-fill",
                 "bi-check-circle-fill"
@@ -232,7 +232,7 @@ const getTodoFromDB = async (uid) => {
               markedTodoUnCompleted(this.id);
               taskCompleteBtn[
                 taskMarkedCheckboxIndex
-              ].textContent = ` InCompelete`;
+              ].textContent = ` InComplete`;
               taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
                 "bi-check-circle-fill",
                 "bi-exclamation-circle-fill"
