@@ -158,7 +158,7 @@ const getTodoFromDB = async (uid) => {
       }" title=${todoCompleted === true ? "Completed" : "InComplete"}>
           ${todoCompleted === true ? " Completed" : " InComplete"}
           </button>
-          <input type="checkbox" class="taskMarkedCheckbox position-absolute w-100 h-100 start-0 top-0 opacity-0" id="${
+          <input type="checkbox" class="task-complete-check-box position-absolute w-100 h-100 start-0 top-0 opacity-0" id="${
             data.id
           }" ${todoCompleted === true ? "checked" : ""} />
           </div>
@@ -171,7 +171,7 @@ const getTodoFromDB = async (uid) => {
       const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
       const taskEditBtn = document.querySelectorAll(".task-edit-btn");
       const taskCompleteCheckBox = document.querySelectorAll(
-        ".taskMarkedCheckbox"
+        ".task-complete-check-box"
       );
       const taskCompleteBtn = document.querySelectorAll(".task-complete-btn");
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {

@@ -171,6 +171,10 @@ input {
   background-color: black;
 }
 
+.task-complete-check-box{
+  cursor: pointer;
+}
+
 #AddTaskTextInput {
   box-shadow: none !important;
 }
