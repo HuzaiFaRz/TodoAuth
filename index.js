@@ -174,9 +174,10 @@ const getTodoFromDB = async (uid) => {
         ".task-complete-check-box"
       );
       const taskCompleteBtn = document.querySelectorAll(".task-complete-btn");
-      Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {
+      Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem, index) => {
         taskDeleteBtnElem.addEventListener("click", function () {
           taskDeleteBtnElem.innerHTML = `Deleting`;
+          taskEditBtn[index].disabled = true;
           taskDeleteBtnElem.style.opacity = "0.5";
           taskDeleteBtnElem.style.cursor = "not-allowed";
           taskDeleteBtnElem.disabled = true;
@@ -188,7 +189,6 @@ const getTodoFromDB = async (uid) => {
         taskEditBtnElem.addEventListener("click", function () {
           const currenttaskID = this.id;
           const currentTaskText = taskText[index].id;
-
           if (addTaskTextInput) {
             addTaskTextInput.value = currentTaskText;
             if (addTaskTextInput.value === currentTaskText) {
