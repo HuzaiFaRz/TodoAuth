@@ -277,6 +277,8 @@ input {
 }
 
 @media (max-width: 412px) {
+  #AddTaskBtn,
+  #UpdateTaskBtn,
   .task-edit-btn,
   .task-delete-btn,
   .task-complete-btn {
