@@ -105,14 +105,13 @@ const getUserInfoFromDB = (uid) => {
     .then((data) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      // userNameDiv.textContent = `Hi! ${data.data().signUpName}`;
       showToast(`Hi! ${data.data().signUpName}`, "black", 5000);
       userProfileDiv.setAttribute("src", `${data.data().signUpProfile}}`);
     })
     .catch((error) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      showToast(error, "#B00020", 2000);
+      console.log(error);
     });
 };
 
@@ -258,7 +257,6 @@ const getTodoFromDB = async (uid) => {
       todoItems.innerHTML = `<h5 class="text-center w-100 fs-6">No Task Has Been Added</h5>`;
     }
   } catch (error) {
-    showToast(error, "#B00020", 2000);
     console.log(error);
   }
 };
@@ -271,7 +269,7 @@ const deleteTodo = async (deletedTodoID) => {
     showToast("Task Deleted SuccessFully", "#B00020", 2000);
     addTaskTextInput.value = "";
   } catch (error) {
-    showToast(error, "#B00020", 2000);
+    console.log(error);
   }
 };
 
@@ -288,7 +286,6 @@ const updateTodo = async (editTodoID, editTodoText) => {
     showToast("Task Updated Successfully", "#198754", 2000);
     addTaskTextInput.value = "";
   } catch (error) {
-    showToast(error, "#B00020", 2000);
     console.log(error);
   }
 };
@@ -301,7 +298,6 @@ const markedTodoCompleted = async (completedTodoID) => {
     });
     showToast("Task Marked As Completed", "#198754", 2000);
   } catch (error) {
-    showToast(error, "#B00020", 2000);
     console.log(error);
   }
 };
@@ -313,7 +309,6 @@ const markedTodoUnCompleted = async (unCompleteTodoID) => {
     });
     showToast("Task Marked As InCompleted", "#B00020", 2000);
   } catch (error) {
-    showToast(error, "#B00020", 2000);
     console.log(error);
   }
 };
@@ -359,7 +354,7 @@ logOutBtn.addEventListener("click", () => {
       resetLogOutButton();
       const errorCode = error.code;
       const errorMessage = error.message;
-      showToast(errorMessage, "#B00020", 2000);
+      console.log(error);
     });
 });
 

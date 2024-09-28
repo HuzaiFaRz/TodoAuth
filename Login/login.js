@@ -32,7 +32,7 @@ const logInFunctionility = () => {
   logInSubmitBtn.style.opacity = "0.5";
   logInSubmitBtn.style.cursor = "not-allowed";
   alertMain.style.display = "flex";
-  alertMain.innerHTML = `<div class="spinner-grow text-light" role="status" style="width: 3rem; height: 3rem; z-index:9999;" ></div>`;
+  alertMain.innerHTML = `<div class="spinner-grow text-light" role="status"  ></div>`;
 
   signInWithEmailAndPassword(
     auth,
@@ -51,9 +51,8 @@ const logInFunctionility = () => {
     .catch((error) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      const errorCode = error.code;
       const errorMessage = error.message;
-      showToast(errorMessage, "#B00020", 2000);
+      console.log(errorMessage);
       resetLoginButton();
     });
 };
@@ -61,12 +60,19 @@ const logInFunctionility = () => {
 logInForm.addEventListener("submit", logInFunctionility);
 
 const passwordsIconsFunctionility = () => {
-  const passwordInput = document.querySelector("#password-input");
-  const passwordShowHide = () =>
-    (passwordInput.type =
-      passwordInput.type === "password" ? "text" : "password");
-
   const passwordIcon = document.querySelector(".password-icon");
-  passwordIcon.addEventListener("click", passwordShowHide);
+  const passwordInput = document.querySelector("#password-input");
+
+  passwordIcon.addEventListener("click", () => {
+    passwordIcon.classList.toggle("password-icon-active");
+    if (passwordIcon.classList.contains("password-icon-active")) {
+      passwordIcon.classList.replace("bi-eye-slash-fill", "bi-eye-fill");
+      passwordInput.setAttribute("type", "text");
+    } else {
+      passwordIcon.classList.replace("bi-eye-fill", "bi-eye-slash-fill");
+      passwordInput.setAttribute("type", "password");
+    }
+  });
 };
+
 passwordsIconsFunctionility();

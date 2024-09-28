@@ -73,7 +73,6 @@ window.addEventListener("load", () => {
         .catch((error) => {
           alertMain.style.display = "none";
           alertMain.innerHTML = "";
-          showToast(error, "#B00020");
           console.log(error);
         });
     } else {
@@ -108,27 +107,6 @@ logOutBtn.addEventListener("click", () => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
       resetLogOutButton();
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      showToast(errorMessage, "#B00020");
+      console.log(error);
     });
 });
-
-const person = {
-  name: "John",
-  address: {
-    city: "New York",
-    zip: "10001",
-  },
-  contact: {
-    phone: "123-456-7890",
-    email: "john@example.com",
-  },
-};
-
-// Nested destructuring
-const {
-  name,
-  address: { city, zip },
-  contact: { phone, email },
-} = person;

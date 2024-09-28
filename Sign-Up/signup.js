@@ -63,7 +63,7 @@ const signUpFunctionility = async () => {
   signUpSubmitBtn.style.cursor = "not-allowed";
   signUpSubmitBtn.disabled = true;
   alertMain.style.display = "flex";
-  alertMain.innerHTML = `<div class="spinner-grow text-light" role="status" style="width: 3rem; height: 3rem; z-index:9999;" ></div>`;
+  alertMain.innerHTML = `<div class="spinner-grow text-light" role="status" ></div>`;
 
   createUserWithEmailAndPassword(
     auth,
@@ -91,25 +91,25 @@ const signUpFunctionility = async () => {
                 .catch((error) => {
                   alertMain.style.display = "none";
                   alertMain.innerHTML = "";
-                  showToast(error, "#B00020", 2000);
+                  console.log(error);
                 });
             })
             .catch((error) => {
               alertMain.style.display = "none";
               alertMain.innerHTML = "";
-              showToast(error, "#B00020", 2000);
+              console.log(error);
             });
         })
         .catch((error) => {
           alertMain.style.display = "none";
           alertMain.innerHTML = "";
-          showToast(error, "#B00020", 2000);
+          console.log(error);
         });
     })
     .catch((error) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      showToast(error.message, "#B00020", 2000);
+      console.log(error);
       resetSignUpButton();
     });
 };
