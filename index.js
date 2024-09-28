@@ -70,7 +70,7 @@ const toDoFunctionility = () => {
         todoCreatedUserEmail: auth.currentUser.email,
         todoCreatedUserUID: uid,
         todoCreatedTime: new Date(),
-        todoCompleted: "No",
+        todoCompleted: false,
       };
 
       const todosCollection = collection(db, "Todos");
@@ -148,23 +148,20 @@ const getTodoFromDB = async (uid) => {
           }" class="task-delete-btn btn btn-outline-danger fw-medium fs-6 rounded-4 px-4 py-2 border-1" title="Delete Task">
             Delete
           </button>
-
-          <div>   
-               <input type="checkbox" class="taskMarkedCheckbox" id="${
-                 data.id
-               }" ${todoCompleted === "Yes" ? "checked" : ""} />
-             <span class="${
-               todoCompleted === "Yes"
-                 ? "bi bi-check-circle-fill"
-                 : "bi bi-exclamation-circle-fill"
-             } taskMarkedCheckboxBtn btn ${
-        todoCompleted === "Yes" ? "btn-success" : "btn-danger"
-      }  fs-6"> ${todoCompleted === "Yes" ? " Completed" : " InCompleted"}
-              </span>
-
-            </div>
-
-  
+          <div class="position-relative overflow-hidden">
+            <button  class="task-complete-btn fw-medium fs-6 rounded-4 px-4 py-2 border-1 bi ${
+              todoCompleted === true
+                ? "bi-check-circle-fill"
+                : "bi-exclamation-circle-fill"
+            } btn ${
+        todoCompleted === true ? "btn-success" : "btn btn-danger"
+      }" title=${todoCompleted === true ? "Completed" : "InComplete"}>
+          ${todoCompleted === true ? " Completed" : " InComplete"}
+          </button>
+          <input type="checkbox" class="taskMarkedCheckbox position-absolute w-100 h-100 start-0 top-0 opacity-0" id="${
+            data.id
+          }" ${todoCompleted === true ? "checked" : ""} />
+          </div>
         </div>
       </li>`;
 
@@ -173,15 +170,10 @@ const getTodoFromDB = async (uid) => {
       const taskText = document.querySelectorAll(".task-text");
       const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
       const taskEditBtn = document.querySelectorAll(".task-edit-btn");
-      const taskMarkedCheckbox = document.querySelectorAll(
+      const taskCompleteCheckBox = document.querySelectorAll(
         ".taskMarkedCheckbox"
       );
-      const taskMarkedCheckboxBtn = document.querySelectorAll(
-        ".taskMarkedCheckboxBtn"
-      );
-      // const taskMarkedCheckboxIcon = document.querySelectorAll(
-      //   "#taskMarkedCheckboxIcon"
-      // );
+      const taskCompleteBtn = document.querySelectorAll(".task-complete-btn");
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem) => {
         taskDeleteBtnElem.addEventListener("click", function () {
           taskDeleteBtnElem.innerHTML = ` <span class="fs-6 d-flex align-items-center justify-content-center gap-2">Deleting<i class="spinner-border spinner-border-sm text-danger" role="status"></i>`;
@@ -218,33 +210,36 @@ const getTodoFromDB = async (uid) => {
         });
       });
 
-      Array.from(taskMarkedCheckbox).forEach(
+      Array.from(taskCompleteCheckBox).forEach(
         (taskMarkedCheckboxElem, taskMarkedCheckboxIndex) => {
           taskMarkedCheckboxElem.addEventListener("click", function () {
+            console.log(this);
+
             if (taskMarkedCheckboxElem.checked === true) {
               markedTodoCompleted(this.id);
-              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].textContent =
-                " Completed";
-              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].classList.replace(
-                "btn-danger",
-                "btn-success"
-              );
-
-              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].classList.replace(
+              taskCompleteBtn[
+                taskMarkedCheckboxIndex
+              ].textContent = ` Completed`;
+              taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
                 "bi-exclamation-circle-fill",
                 "bi-check-circle-fill"
               );
+              taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
+                "btn-danger",
+                "btn-success"
+              );
             } else {
               markedTodoUnCompleted(this.id);
-              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].textContent =
-                " InCompleted ";
-              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].classList.replace(
-                "btn-success",
-                "btn-danger"
-              );
-              taskMarkedCheckboxBtn[taskMarkedCheckboxIndex].classList.replace(
+              taskCompleteBtn[
+                taskMarkedCheckboxIndex
+              ].textContent = ` InCompelete`;
+              taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
                 "bi-check-circle-fill",
                 "bi-exclamation-circle-fill"
+              );
+              taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
+                "btn-success",
+                "btn-danger"
               );
             }
           });
@@ -294,9 +289,9 @@ const markedTodoCompleted = async (completedTodoID) => {
   try {
     const docRef = doc(db, "Todos", completedTodoID);
     await updateDoc(docRef, {
-      todoCompleted: "Yes",
+      todoCompleted: true,
     });
-    showToast("Task Marked As Completed", "#198754", 2000);
+    showToast("Task Marked As Complete", "#198754", 2000);
   } catch (error) {
     console.log(error);
   }
@@ -305,9 +300,9 @@ const markedTodoUnCompleted = async (unCompleteTodoID) => {
   try {
     const docRef = doc(db, "Todos", unCompleteTodoID);
     await updateDoc(docRef, {
-      todoCompleted: "No",
+      todoCompleted: false,
     });
-    showToast("Task Marked As InCompleted", "#B00020", 2000);
+    showToast("Task Marked As InComplete", "#B00020", 2000);
   } catch (error) {
     console.log(error);
   }
