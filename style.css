@@ -171,7 +171,7 @@ input {
   background-color: black;
 }
 
-.task-complete-check-box{
+.task-complete-check-box {
   cursor: pointer;
 }
 
@@ -195,6 +195,9 @@ input {
 }
 
 @media (max-width: 600px) {
+  .main {
+    padding: 0 10px;
+  }
   .alert-main {
     padding: 0 10px;
   }
@@ -272,6 +275,16 @@ input {
     height: 200px;
   }
 }
+
+@media (max-width: 412px) {
+  .task-edit-btn,
+  .task-delete-btn,
+  .task-complete-btn {
+    padding: 5px 15px !important;
+    font-size: 12px !important;
+  }
+}
+
 @media (max-width: 400px) {
   #SuggestionAccount::after,
   #SuggestionAccount::before {
