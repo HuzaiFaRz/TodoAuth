@@ -53,6 +53,7 @@ const logInFunctionility = () => {
       alertMain.innerHTML = "";
       const errorMessage = error.message;
       console.log(errorMessage);
+      showToast(errorMessage, "#B00020", 2000);
       resetLoginButton();
     });
 };

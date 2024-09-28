@@ -110,6 +110,7 @@ const signUpFunctionility = async () => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
       console.log(error);
+      showToast(error, "#B00020", 2000);
       resetSignUpButton();
     });
 };

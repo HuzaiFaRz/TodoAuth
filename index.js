@@ -105,7 +105,7 @@ const getUserInfoFromDB = (uid) => {
     .then((data) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      showToast(`Hi! ${data.data().signUpName}`, "black", 5000);
+      showToast(`Hi! ${data.data().signUpName}`, "black", 4000);
       userProfileDiv.setAttribute("src", `${data.data().signUpProfile}}`);
     })
     .catch((error) => {
