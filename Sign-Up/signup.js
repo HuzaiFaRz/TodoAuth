@@ -9,6 +9,7 @@ import {
   ref,
   uploadBytes,
   getDownloadURL,
+  serverTimestamp,
 } from "../firebase.js";
 const signUpForm = document.querySelector(".signup-form");
 const signUpSubmitBtn = document.querySelector("#SignUpBtn");
@@ -30,8 +31,10 @@ const signUpFunctionility = async () => {
     signUpPassword: signUpFormData.get("SignUpPassword"),
     signUpConfirmPassword: signUpFormData.get("SignUpConfirmPassword"),
     signUpProfile: signUpFormData.get("SignUpProfile"),
-    signedUpUserTime: new Date(),
+    signedUpUserTime: serverTimestamp(),
   };
+  console.log(serverTimestamp);
+
   if (
     !signUpUserInformaTion.signUpName ||
     !signUpUserInformaTion.signUpEmail ||

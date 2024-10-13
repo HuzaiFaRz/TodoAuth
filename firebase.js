@@ -20,6 +20,7 @@ import {
   deleteDoc,
   updateDoc,
   orderBy,
+  serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import {
   getStorage,
@@ -82,4 +83,5 @@ export {
   deleteDoc,
   updateDoc,
   orderBy,
+  serverTimestamp,
 };

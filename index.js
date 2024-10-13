@@ -15,6 +15,7 @@ import {
   deleteDoc,
   updateDoc,
   orderBy,
+  serverTimestamp,
 } from "./firebase.js";
 
 const logOutBtn = document.querySelector(".logout-btn");
@@ -69,7 +70,7 @@ const toDoFunctionility = () => {
         todoText: addTaskTextInput.value,
         todoCreatedUserEmail: auth.currentUser.email,
         todoCreatedUserUID: uid,
-        todoCreatedTime: new Date(),
+        todoCreatedTime: serverTimestamp(),
         todoCompleted: false,
       };
 
@@ -215,8 +216,6 @@ const getTodoFromDB = async (uid) => {
       Array.from(taskCompleteCheckBox).forEach(
         (taskMarkedCheckboxElem, taskMarkedCheckboxIndex) => {
           taskMarkedCheckboxElem.addEventListener("click", function () {
-            console.log(this);
-
             if (taskMarkedCheckboxElem.checked === true) {
               markedTodoCompleted(this.id);
               taskCompleteBtn[
@@ -275,7 +274,7 @@ const updateTodo = async (editTodoID, editTodoText) => {
     const docRef = doc(db, "Todos", editTodoID);
     await updateDoc(docRef, {
       todoText: editTodoText,
-      editingTime: new Date(),
+      editingTime: serverTimestamp(),
     });
     addTaskBtn.style.display = "block";
     resetUpdateTaskButton();
