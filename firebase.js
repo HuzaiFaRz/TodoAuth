@@ -28,35 +28,14 @@ import {
   getDownloadURL,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDMskxzV8Md7OLmdzyknzxMjw-W-BLkR1Y",
-//   authDomain: "authdash-ae8c0.firebaseapp.com",
-//   projectId: "authdash-ae8c0",
-//   storageBucket: "authdash-ae8c0.appspot.com",
-//   messagingSenderId: "815513332044",
-//   appId: "1:815513332044:web:da3a17da9373fd5b7787e9",
-//   measurementId: "G-S0XNN139BP",
-// };
-import e from "./.env";
-
-const {
-  VITE_apiKey,
-  VITE_authDomain,
-  VITE_projectId,
-  VITE_storageBucket,
-  VITE_messagingSenderId,
-  VITE_appId,
-  VITE_measurementId,
-} = e;
-
 const firebaseConfig = {
-  apiKey: VITE_apiKey,
-  authDomain: VITE_authDomain,
-  projectId: VITE_projectId,
-  storageBucket: VITE_storageBucket,
-  messagingSenderId: VITE_messagingSenderId,
-  appId: VITE_appId,
-  measurementId: VITE_measurementId,
+  apiKey: "AIzaSyDMskxzV8Md7OLmdzyknzxMjw-W-BLkR1Y",
+  authDomain: "authdash-ae8c0.firebaseapp.com",
+  projectId: "authdash-ae8c0",
+  storageBucket: "authdash-ae8c0.appspot.com",
+  messagingSenderId: "815513332044",
+  appId: "1:815513332044:web:da3a17da9373fd5b7787e9",
+  measurementId: "G-S0XNN139BP",
 };
 
 const app = initializeApp(firebaseConfig);
