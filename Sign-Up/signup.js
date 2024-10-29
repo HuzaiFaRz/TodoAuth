@@ -33,8 +33,6 @@ const signUpFunctionility = async () => {
     signUpProfile: signUpFormData.get("SignUpProfile"),
     signedUpUserTime: serverTimestamp(),
   };
-  console.log(serverTimestamp);
-
   if (
     !signUpUserInformaTion.signUpName ||
     !signUpUserInformaTion.signUpEmail ||
