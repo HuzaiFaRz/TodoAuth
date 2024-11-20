@@ -42,6 +42,7 @@ const signUpFunctionility = async () => {
   ) {
     showToast("Fill All Field", "#B00020", 2000);
     resetSignUpButton();
+
     return;
   } else if (
     !signUpUserInformaTion.signUpProfile ||
