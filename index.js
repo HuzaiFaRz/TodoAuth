@@ -60,12 +60,10 @@ const toDoFunctionility = () => {
       const uid = user.uid;
       userProfileLink.setAttribute("href", "./DashBoard/dashboard.html");
       getTodoFromDB(uid);
-
       if (!addTaskTextInput.value) {
         showToast("Write Task In Input", "#B00020", 2000);
         return;
       }
-
       const todoDescription = {
         todoText: addTaskTextInput.value,
         todoCreatedUserEmail: auth.currentUser.email,
@@ -73,18 +71,15 @@ const toDoFunctionility = () => {
         todoCreatedTime: serverTimestamp(),
         todoCompleted: false,
       };
-
       const todosCollection = collection(db, "Todos");
       addTaskBtn.innerHTML = `Adding`;
       addTaskBtn.style.opacity = "0.5";
       addTaskBtn.style.cursor = "not-allowed";
       addTaskBtn.disabled = true;
-
       addDoc(todosCollection, todoDescription)
         .then((snapShot) => {
           showToast("Task Added", "#198754", 2000);
           resetTodoAddButton();
-
           addTaskTextInput.value = "";
         })
         .catch((error) => {
@@ -106,8 +101,8 @@ const getUserInfoFromDB = (uid) => {
     .then((data) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
-      showToast(`Hi! ${data.data().signUpName}`, "black", 4000);
-      userProfileDiv.setAttribute("src", `${data.data().signUpProfile}}`);
+      showToast(`Hi! ${data.data().signUpName}`, "black", 2000);
+      userProfileDiv.setAttribute(`src`, `${data.data().signUpProfile}`);
     })
     .catch((error) => {
       alertMain.style.display = "none";
@@ -311,6 +306,7 @@ const markedTodoUnCompleted = async (unCompleteTodoID) => {
 
 window.addEventListener("load", () => {
   onAuthStateChanged(auth, (user) => {
+    alertMain.style.display = "flex";
     if (user) {
       const uid = user.uid;
       getTodoFromDB(uid);
