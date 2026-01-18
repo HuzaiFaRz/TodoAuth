@@ -3,12 +3,12 @@ import {
   auth,
   createUserWithEmailAndPassword,
   db,
-  storage,
+  // storage,
   doc,
   setDoc,
-  ref,
-  uploadBytes,
-  getDownloadURL,
+  // ref,
+  // uploadBytes,
+  // getDownloadURL,
   serverTimestamp,
 } from "../firebase.js";
 const signUpForm = document.querySelector(".signup-form");
@@ -30,7 +30,7 @@ const signUpFunctionility = async () => {
     signUpPhoneNumber: signUpFormData.get("SignUpPhoneNumber"),
     signUpPassword: signUpFormData.get("SignUpPassword"),
     signUpConfirmPassword: signUpFormData.get("SignUpConfirmPassword"),
-    signUpProfile: signUpFormData.get("SignUpProfile"),
+    // signUpProfile: signUpFormData.get("SignUpProfile"),
     signedUpUserTime: serverTimestamp(),
   };
   if (
@@ -44,14 +44,15 @@ const signUpFunctionility = async () => {
     resetSignUpButton();
 
     return;
-  } else if (
-    !signUpUserInformaTion.signUpProfile ||
-    !signUpUserInformaTion.signUpProfile.name
-  ) {
-    showToast("Upload Profile Photo", "#B00020", 2000);
-    resetSignUpButton();
-    return;
   }
+  //  else if (
+  //   !signUpUserInformaTion.signUpProfile ||
+  //   !signUpUserInformaTion.signUpProfile.name
+  // ) {
+  //   showToast("Upload Profile Photo", "#B00020", 2000);
+  //   resetSignUpButton();
+  //   return;
+  // }
   if (
     signUpUserInformaTion.signUpPassword !==
     signUpUserInformaTion.signUpConfirmPassword
@@ -60,6 +61,7 @@ const signUpFunctionility = async () => {
     resetSignUpButton();
     return;
   }
+
   signUpSubmitBtn.innerHTML = ` Sign Up <i class="spinner-border spinner-border-sm text-light" role="status"> </i>`;
   signUpSubmitBtn.style.opacity = "0.5";
   signUpSubmitBtn.style.cursor = "not-allowed";
@@ -70,43 +72,42 @@ const signUpFunctionility = async () => {
   createUserWithEmailAndPassword(
     auth,
     signUpUserInformaTion.signUpEmail,
-    signUpUserInformaTion.signUpPassword
+    signUpUserInformaTion.signUpPassword,
   )
     .then((userCredential) => {
-      const user = userCredential.user;
-      const userRef = ref(storage, `Users/${userCredential.user.uid}`);
-      uploadBytes(userRef, signUpUserInformaTion.signUpProfile)
-        .then((a) => {
-          getDownloadURL(userRef)
-            .then((URL) => {
-              signUpUserInformaTion.signUpProfile = URL;
-              const userDocRef = doc(db, "Users", userCredential.user.uid);
-              setDoc(userDocRef, signUpUserInformaTion)
-                .then((b) => {
-                  alertMain.style.display = "none";
-                  alertMain.innerHTML = "";
-                  showToast("SignUp SuccessFully", "#198754", 2000);
-                  signUpForm.reset();
-                  resetSignUpButton();
-                  window.location.href = "../Login/login.html";
-                })
-                .catch((error) => {
-                  alertMain.style.display = "none";
-                  alertMain.innerHTML = "";
-                  console.log(error);
-                });
-            })
-            .catch((error) => {
-              alertMain.style.display = "none";
-              alertMain.innerHTML = "";
-              console.log(error);
-            });
+      const userDocRef = doc(db, "Users", userCredential.user.uid);
+      setDoc(userDocRef, signUpUserInformaTion)
+        .then((b) => {
+          alertMain.style.display = "none";
+          alertMain.innerHTML = "";
+          showToast("SignUp SuccessFully", "#198754", 2000);
+          signUpForm.reset();
+          resetSignUpButton();
+          window.location.href = "../Login/login.html";
         })
         .catch((error) => {
           alertMain.style.display = "none";
           alertMain.innerHTML = "";
           console.log(error);
         });
+      // const userRef = ref(storage, `Users/${userCredential.user.uid}`);
+      // uploadBytes(userRef, signUpUserInformaTion.signUpProfile)
+      //   .then((a) => {
+      //     getDownloadURL(userRef)
+      //       .then((URL) => {
+      //         signUpUserInformaTion.signUpProfile = URL;
+      //       })
+      //       .catch((error) => {
+      //         alertMain.style.display = "none";
+      //         alertMain.innerHTML = "";
+      //         console.log(error);
+      //       });
+      //   })
+      //   .catch((error) => {
+      //     alertMain.style.display = "none";
+      //     alertMain.innerHTML = "";
+      //     console.log(error);
+      //   });
     })
     .catch((error) => {
       alertMain.style.display = "none";
@@ -117,10 +118,10 @@ const signUpFunctionility = async () => {
     });
 };
 
+signUpForm.addEventListener("submit", signUpFunctionility);
 const passwordsIconsFunctionility = () => {
   const passwordIcons = document.querySelectorAll(".password-icon");
-  const passwordInputs = document.querySelectorAll("#password-input");
-
+  const passwordInputs = document.querySelectorAll(".password-input");
   Array.from(passwordIcons).forEach((passwordIconElem, passwordIconIndex) => {
     passwordIconElem.addEventListener("click", () => {
       passwordIconElem.classList.toggle("password-icon-active");
@@ -136,5 +137,3 @@ const passwordsIconsFunctionility = () => {
 };
 
 passwordsIconsFunctionility();
-
-signUpForm.addEventListener("submit", signUpFunctionility);

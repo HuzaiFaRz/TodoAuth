@@ -22,12 +22,14 @@ import {
   orderBy,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
+
+
+// import {
+//   getStorage,
+//   ref,
+//   uploadBytes,
+//   getDownloadURL,
+// } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDMskxzV8Md7OLmdzyknzxMjw-W-BLkR1Y",
@@ -43,7 +45,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
-const storage = getStorage(app);
+// const storage = getStorage(app);
 
 const showToast = (massege, background, duration) => {
   Toastify({
@@ -68,14 +70,14 @@ export {
   signOut,
   provider,
   db,
-  storage,
+  // storage,
   doc,
   setDoc,
   getDoc,
   getDocs,
-  ref,
-  uploadBytes,
-  getDownloadURL,
+  // ref,
+  // uploadBytes,
+  // getDownloadURL,
   addDoc,
   collection,
   query,

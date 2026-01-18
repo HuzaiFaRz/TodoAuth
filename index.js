@@ -102,7 +102,7 @@ const getUserInfoFromDB = (uid) => {
       alertMain.style.display = "none";
       alertMain.innerHTML = "";
       showToast(`Hi! ${data.data().signUpName}`, "black", 2000);
-      userProfileDiv.setAttribute(`src`, `${data.data().signUpProfile}`);
+      userProfileDiv.textContent = data.data().signUpName.toUpperCase()[0];
     })
     .catch((error) => {
       alertMain.style.display = "none";
@@ -116,7 +116,7 @@ const getTodoFromDB = async (uid) => {
     const queryTodo = query(
       collection(db, "Todos"),
       where("todoCreatedUserUID", "==", uid),
-      orderBy("todoCreatedTime", "desc")
+      orderBy("todoCreatedTime", "desc"),
     );
 
     const querySnapshot = await getDocs(queryTodo);
@@ -125,9 +125,7 @@ const getTodoFromDB = async (uid) => {
 
     querySnapshot.forEach((data) => {
       const docData = data.data();
-
       const { todoText, todoCompleted } = docData;
-
       const todoDataShowing = `     
       <li class="task w-100 gap-1 py-2 px-3 border-bottom border-2 border-black">
         <span id="${todoText}" class="task-text w-100 fs-6 fw-medium text-dark">
@@ -150,8 +148,8 @@ const getTodoFromDB = async (uid) => {
                 ? "bi-check-circle-fill"
                 : "bi-exclamation-circle-fill"
             } btn ${
-        todoCompleted === true ? "btn-success" : "btn btn-danger"
-      }" title=${todoCompleted === true ? "Complete" : "InComplete"}>
+              todoCompleted === true ? "btn-success" : "btn btn-danger"
+            }" title=${todoCompleted === true ? "Complete" : "InComplete"}>
           ${todoCompleted === true ? " Complete" : " InComplete"}
           </button>
           <input type="checkbox" class="task-complete-check-box position-absolute w-100 h-100 start-0 top-0 opacity-0" id="${
@@ -167,7 +165,7 @@ const getTodoFromDB = async (uid) => {
       const taskDeleteBtn = document.querySelectorAll(".task-delete-btn");
       const taskEditBtn = document.querySelectorAll(".task-edit-btn");
       const taskCompleteCheckBox = document.querySelectorAll(
-        ".task-complete-check-box"
+        ".task-complete-check-box",
       );
       const taskCompleteBtn = document.querySelectorAll(".task-complete-btn");
       Array.from(taskDeleteBtn).forEach((taskDeleteBtnElem, index) => {
@@ -213,33 +211,31 @@ const getTodoFromDB = async (uid) => {
           taskMarkedCheckboxElem.addEventListener("click", function () {
             if (taskMarkedCheckboxElem.checked === true) {
               markedTodoCompleted(this.id);
-              taskCompleteBtn[
-                taskMarkedCheckboxIndex
-              ].textContent = ` Complete`;
+              taskCompleteBtn[taskMarkedCheckboxIndex].textContent =
+                ` Complete`;
               taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
                 "bi-exclamation-circle-fill",
-                "bi-check-circle-fill"
+                "bi-check-circle-fill",
               );
               taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
                 "btn-danger",
-                "btn-success"
+                "btn-success",
               );
             } else {
               markedTodoUnCompleted(this.id);
-              taskCompleteBtn[
-                taskMarkedCheckboxIndex
-              ].textContent = ` InComplete`;
+              taskCompleteBtn[taskMarkedCheckboxIndex].textContent =
+                ` InComplete`;
               taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
                 "bi-check-circle-fill",
-                "bi-exclamation-circle-fill"
+                "bi-exclamation-circle-fill",
               );
               taskCompleteBtn[taskMarkedCheckboxIndex].classList.replace(
                 "btn-success",
-                "btn-danger"
+                "btn-danger",
               );
             }
           });
-        }
+        },
       );
 
       resetTodoAddButton();
@@ -292,6 +288,7 @@ const markedTodoCompleted = async (completedTodoID) => {
     console.log(error);
   }
 };
+
 const markedTodoUnCompleted = async (unCompleteTodoID) => {
   try {
     const docRef = doc(db, "Todos", unCompleteTodoID);
@@ -315,7 +312,7 @@ window.addEventListener("load", () => {
       logOutBtn.style.display = "block";
     } else {
       userNameDiv.textContent = `Hi! User`;
-      userProfileDiv.setAttribute("src", "Images/Profile-Default.jpg");
+      userProfileDiv.textContent = 'Hi';
       logOutBtn.style.display = "none";
       alertMain.style.display = "flex";
     }

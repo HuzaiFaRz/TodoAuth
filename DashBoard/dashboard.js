@@ -43,7 +43,7 @@ window.addEventListener("load", () => {
           alertMain.style.display = "none";
           alertMain.innerHTML = "";
           const {
-            signUpProfile,
+            // signUpProfile,
             signUpName,
             signUpEmail,
             signUpPhoneNumber,
@@ -67,8 +67,8 @@ window.addEventListener("load", () => {
           dashBoardEmail.value = signUpEmail;
           dashBoardPhoneNumber.value = signUpPhoneNumber;
           dashBoardPassword.value = signUpPassword;
-          dashBoardTime.value = `Created At: ${readableDate}`;
-          userProfileDiv.setAttribute("src", `${signUpProfile}}`);
+          dashBoardTime.value = `${readableDate}`;
+          userProfileDiv.textContent = data.data().signUpName.toUpperCase()[0];
         })
         .catch((error) => {
           alertMain.style.display = "none";
